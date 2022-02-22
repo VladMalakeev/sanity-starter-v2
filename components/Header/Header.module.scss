@@ -1,0 +1,16 @@
+@import '@/styles/variables';
+
+.wrapper {
+  padding: 24px 32px 0;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  position: relative;
+  z-index: 20;
+}

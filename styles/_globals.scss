@@ -1,0 +1,83 @@
+html {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: $color-white;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-weight: 400;
+  color: $main-dark;
+}
+
+.layout {
+  overflow: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+ul[class],
+ol[class] {
+  list-style: none;
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+a,
+button {
+  transition: 0.2s;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+textarea {
+  resize: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  outline: none;
+}
