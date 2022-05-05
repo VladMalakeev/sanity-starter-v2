@@ -1,6 +1,11 @@
+import { groq } from 'next-sanity';
 import Head from 'next/head';
 
-export default function Home() {
+import { getClient } from '../utils/sanity';
+
+const query = groq`*[_type=="home"][0]`;
+
+export default function Home(props) {
   return (
     <div>
       <Head>
@@ -13,4 +18,13 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export async function getStaticProps({ params = {}, preview = false }) {
+  const productsData = await getClient(preview).fetch(query);
+  return {
+    props: {
+      productsData,
+    },
+  };
 }
