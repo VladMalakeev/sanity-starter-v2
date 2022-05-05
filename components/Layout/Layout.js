@@ -1,14 +1,14 @@
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 
-const Layout = ({children}) => {
-    return (
-        <div>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-        </div>
-    )
-}
+const Layout = ({ siteconfig, children }) => {
+  return (
+    <div>
+      <Header LayoutData={siteconfig} />
+      <main>{children}</main>
+      <Footer LayoutData={siteconfig} />
+    </div>
+  );
+};
 
-export default Layout
+export default Layout;

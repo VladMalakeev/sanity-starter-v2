@@ -5,23 +5,23 @@ import Button, { VARIANTS, COMPONENTS } from '@/components/Button';
 
 import styles from './Navigation.module.scss';
 
-const Navigation = ({ isNavigationOpen }) => {
+const Navigation = ({ menuLinkArr, buttonObj, isNavigationOpen }) => {
   return (
     <nav
       className={classnames(styles.wrapper, {
         [styles.menuIsOpen]: isNavigationOpen,
       })}
     >
-      <Link href="/about" passHref>
-        <a href="about" className={styles.link}>
-          About
-        </a>
-      </Link>
-      <Link href="/blog" passHref>
-        <a href="blog" className={styles.link}>
-          Blog
-        </a>
-      </Link>
+      {menuLinkArr.map(({ navLink, navName }, index) => {
+        return (
+          <Link href={`/${navLink.current}`} passHref key={index}>
+            <a href={navLink.current} className={styles.link}>
+              {navName}
+            </a>
+          </Link>
+        );
+      })}
+
       <Button
         type="button"
         component={COMPONENTS.BUTTON}
@@ -29,7 +29,7 @@ const Navigation = ({ isNavigationOpen }) => {
         variant={VARIANTS.SECONDARY}
         className={styles.button}
       >
-        Sign in
+        {buttonObj.buttonText}
       </Button>
     </nav>
   );

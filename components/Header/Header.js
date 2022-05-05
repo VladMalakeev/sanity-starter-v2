@@ -1,26 +1,37 @@
+import classnames from 'classnames';
+import Link from 'next/link';
 import { useState } from 'react';
 
-import Logo from '@/components/assets/Logo';
-
+import { urlFor } from '../../utils/sanity';
 import Navigation from './Navigation';
 import Burger from './components/Burger';
 
 import styles from './Header.module.scss';
 
-const Header = () => {
+const Header = ({ LayoutData }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const handleBurgerClick = () => {
     setMenuOpen((isOpen) => !isOpen);
   };
 
+  const { logo, menuLinkArr, buttonObj } = LayoutData;
+
   return (
     <header className={styles.wrapper}>
-      <div className={styles.container}>
+      <div className={classnames(styles.container, 'container')}>
         <div className={styles.logo}>
-          <Logo />
+          <Link href="/">
+            <a href="home">
+              <img className="logo" src={urlFor(logo)} />
+            </a>
+          </Link>
         </div>
 
-        <Navigation isNavigationOpen={isMenuOpen} />
+        <Navigation
+          menuLinkArr={menuLinkArr}
+          buttonObj={buttonObj}
+          isNavigationOpen={isMenuOpen}
+        />
 
         <Burger onClick={handleBurgerClick} isBurgerActive={isMenuOpen} />
       </div>
