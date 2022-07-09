@@ -15,6 +15,8 @@ import features from './objects/features';
 import hero from './objects/hero';
 import partners from './objects/partners';
 import testimonial from './objects/testimonial';
+import route from  './documents/route'
+import nesting from './documents/nesting'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -36,5 +38,7 @@ export default createSchema({
     features,
     testimonial,
     blockContent,
+    route,
+    nesting
   ]),
 });

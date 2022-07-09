@@ -1,7 +1,8 @@
 {
   "root": true,
   "project": {
-    "name": "studio"
+    "name": "studio",
+    "basePath": "/cms"
   },
   "api": {
     "projectId": "trgq7b81",
@@ -32,7 +33,15 @@
     },
     {
       "implements": "part:@sanity/form-builder/input/image/asset-sources",
-      "path": "./assetSources.js"
+      "path": "./src/assetSources.js"
+    },
+    {
+      "name": "part:@sanity/base/initial-value-templates",
+      "path": "./src/initialValueTemplates.js"
+    },
+    {
+      "implements": "part:@sanity/components/panes/default",
+      "path": "./src/customDefaultDeskPane.js"
     }
   ]
 }

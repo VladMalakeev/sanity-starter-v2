@@ -17,6 +17,12 @@ export default {
       title: "Slug",
       readOnly: true,
     },
+    {
+      name: 'parentRoute',
+      title: 'Parent route',
+      type: 'reference',
+      to:[{type: 'route'}]
+    }
   ],
 
   preview: {

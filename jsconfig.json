@@ -7,7 +7,7 @@
         "@/assets/*": ["components/assets/*"],
         "@/helpers/*": ["helpers/*"],
         "@/styles/*": ["styles/*"],
-
+        "@/utils/*": ["utils/*"]
       }
     }
   }
