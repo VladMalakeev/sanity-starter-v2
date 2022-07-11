@@ -1,3 +1,5 @@
 import AssetSource from 'part:sanity-plugin-media-library/asset-source';
 
-export default [AssetSource];
+const assetList = [AssetSource];
+
+export default assetList;

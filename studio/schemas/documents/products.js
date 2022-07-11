@@ -1,12 +1,9 @@
 import { SLUG_FIELD, TITLE_FIELD } from '../helpers/fields';
 
-const blog = {
-  name: 'blog',
+const products = {
+  name: 'products',
   type: 'document',
-  title: 'Blog',
-  initialValue: {
-    slug: '',
-  },
+  title: 'Products',
   fields: [TITLE_FIELD, SLUG_FIELD],
 
   preview: {
@@ -16,4 +13,4 @@ const blog = {
   },
 };
 
-export default blog;
+export default products;

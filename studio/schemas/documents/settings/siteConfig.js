@@ -1,4 +1,4 @@
-export default {
+const siteConfig = {
   name: 'siteConfig',
   type: 'document',
   title: 'Site configuration',
@@ -208,3 +208,5 @@ export default {
     },
   ],
 };
+
+export default siteConfig;

@@ -38,10 +38,6 @@
     {
       "name": "part:@sanity/base/initial-value-templates",
       "path": "./src/initialValueTemplates.js"
-    },
-    {
-      "implements": "part:@sanity/components/panes/default",
-      "path": "./src/customDefaultDeskPane.js"
     }
   ]
 }

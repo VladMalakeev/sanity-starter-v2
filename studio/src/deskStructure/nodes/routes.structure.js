@@ -1,25 +1,20 @@
 import S from '@sanity/desk-tool/structure-builder';
-import React from 'react';
-import { MdWeb } from 'react-icons/md';
+import { AiOutlineSetting } from 'react-icons/ai';
+import { ImLink } from 'react-icons/im';
 
 import { sanityClient } from '../../../helpers/client';
 
 export default S.listItem()
   .title('Routes')
+  .icon(ImLink)
   .child(() => {
     return S.documentTypeList('route')
       .title('Parent routes')
       .filter('_type == "route" && !defined(parentRoute)')
-      .menuItems([
-        S.menuItem()
-          .title('Add parent route')
-          .icon(MdWeb)
-          .intent({
-            type: 'create',
-            params: [{ type: 'route', template: 'routing' }, { parentRoute: '' }],
-          })
-          .showAsAction(),
+      .initialValueTemplates([
+        S.initialValueTemplateItem('routing', { parentRoute: '' }),
       ])
+      .menuItems([])
       .child(getNestedChildren);
   });
 
@@ -28,25 +23,14 @@ const getNestedChildren = async (parent) => {
     '*[_type == "route" && _id == $parent][0]',
     { parent },
   );
-  return S.documentList()
-    .id(parent)
-    .title(route?.title)
+
+  return S.documentTypeList('route')
+    .title(`/${route?.slug.current}`)
     .filter('_type == "route" && $parent == parentRoute._ref')
     .menuItems([
       S.menuItem()
-        .title(`Create ${route?.title}`)
-        .icon(MdWeb)
-        .intent({
-          type: 'create',
-          params: [
-            { type: 'route', template: 'routing' },
-            { parentRoute: parent, parentLevel: route.level },
-          ],
-        })
-        .showAsAction(),
-      S.menuItem()
         .title(`Edit ${route?.title}`)
-        .icon(MdWeb)
+        .icon(AiOutlineSetting)
         .intent({
           type: 'edit',
           params: [{ type: 'route', id: parent }],
@@ -54,5 +38,10 @@ const getNestedChildren = async (parent) => {
         .showAsAction(),
     ])
     .params({ parent })
+    .initialValueTemplates([
+      S.initialValueTemplateItem('routing', {
+        parentRoute: parent,
+      }),
+    ])
     .child(getNestedChildren);
 };

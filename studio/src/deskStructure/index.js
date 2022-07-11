@@ -1,5 +1,6 @@
 import S from '@sanity/desk-tool/structure-builder';
-import React from 'react';
+import { GoSettings } from 'react-icons/go';
+import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
 import { MdWeb, MdSettings } from 'react-icons/md';
 import { RiArticleLine } from 'react-icons/ri';
 
@@ -7,28 +8,37 @@ import PagePreview from '../components/previews/PagePreview';
 import { singleton } from './helpers/singleton';
 import routes from './nodes/routes.structure';
 
-export default () =>
-  S.list()
-    .title('Halo starter')
-    .items([
-      S.listItem()
-        .title('Website')
-        .icon(MdWeb)
-        .child(
-          S.list()
-            .title('Website')
-            .items([
-              singleton({
-                title: 'Site configuration',
-                type: 'siteConfig',
-                icon: MdSettings,
-              }),
-              routes,
-            ]),
-        ),
+const deskStructure = S.list()
+  .title('Halo starter')
+  .items([
+    S.listItem()
+      .title('Website')
+      .icon(MdWeb)
+      .child(
+        S.list()
+          .title('Website')
+          .items([
+            singleton({
+              title: 'Site configuration',
+              type: 'siteConfig',
+              icon: MdSettings,
+            }),
+            routes,
+            singleton({
+              title: 'Dynamic routes configuration',
+              type: 'routeSettings',
+              icon: GoSettings,
+            }),
+            S.listItem()
+              .title('Static pages')
+              .icon(HiOutlineDocumentDuplicate)
+              .child(S.documentTypeList('staticPages').title('Static pages')),
+          ]),
+      ),
 
-      S.documentTypeListItem('blog').title('Blog').icon(RiArticleLine),
-    ]);
+    S.documentTypeListItem('blog').title('Blog').icon(RiArticleLine),
+    S.documentTypeListItem('products').title('Products').icon(RiArticleLine),
+  ]);
 
 export const getDefaultDocumentNode = ({ schemaType }) => {
   /**
@@ -48,3 +58,5 @@ export const getDefaultDocumentNode = ({ schemaType }) => {
   }
   return S.document().views([S.view.form()]);
 };
+
+export default deskStructure;
