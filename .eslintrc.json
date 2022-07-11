@@ -1,3 +1,6 @@
 {
-  "extends": ["halo-lab", "next/core-web-vitals"]
+  "extends": ["halo-lab", "next/core-web-vitals", "@sanity/eslint-config-studio"],
+  "rules": {
+    "no-underscore-dangle": "off"
+  }
 }
