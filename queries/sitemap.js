@@ -1,6 +1,7 @@
 import groq from 'groq';
 
-import { getClient } from '@/utils/sanity';
+import { getClient } from '@/utils/sanity/client';
+import { REDIRECT_TYPES } from '@/utils/sanity/consants';
 
 import { parentRouteView, slugView } from './components/route';
 
@@ -8,21 +9,22 @@ const routeView = `
   _id,
   ${slugView},
   ${parentRouteView},
-  redirect,
-  redirectPage {
-    ${parentRouteView}
-  }
+  useRedirect,
+  redirectType,
+  redirectPage
 `;
 
 const staticPageView = `
   _id,
   isHomePage,
+  _updatedAt,
   ${parentRouteView}
 `;
 
 const dynamicPageView = `
   _id,
   _type,
+  _updatedAt,
   ${slugView},
 `;
 
@@ -84,20 +86,43 @@ export const fetchSitemap = async () => {
     return {
       path: pathList.reverse(),
       id: page._id,
+      updatedAt: page._updatedAt,
     };
   });
 
   // searching all dynamic routes
   const dynamicRoutes = sitemap.dynamicPages.map((page) => {
     const pathList = [page.slug];
-
     findNestedRoutes(dynamicPageRoutes[page._type], pathList);
 
     return {
       path: pathList.reverse(),
       id: page._id,
+      updatedAt: page._updatedAt,
     };
   });
 
-  return [...staticRoutes, ...dynamicRoutes];
+  const redirectPages = sitemap.routes
+    .filter((route) => route.useRedirect && route.redirectType)
+    .map((route) => {
+      const pathList = [route.slug];
+      findNestedRoutes(route, pathList);
+
+      const redirectPathList = [];
+      if (route.redirectType === REDIRECT_TYPES.customPage) {
+        const redirectPage = getParentRoute(route.redirectPage._ref);
+        redirectPathList.push(redirectPage.slug);
+        findNestedRoutes(redirectPage, redirectPathList);
+      }
+
+      return {
+        path: pathList.reverse(),
+        redirectPath: redirectPathList.reverse(),
+      };
+    });
+
+  return {
+    pages: [...staticRoutes, ...dynamicRoutes],
+    redirects: redirectPages,
+  };
 };

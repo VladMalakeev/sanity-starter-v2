@@ -1,4 +1,6 @@
-import { urlFor } from '../../utils/sanity';
+import React from 'react';
+
+import { urlFor } from '@/utils/sanity/client';
 
 import styles from './Socials.module.scss';
 

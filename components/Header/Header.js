@@ -1,8 +1,9 @@
 import classnames from 'classnames';
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-import { urlFor } from '../../utils/sanity';
+import { urlFor } from '@/utils/sanity/client';
+
 import Navigation from './Navigation';
 import Burger from './components/Burger';
 
@@ -21,7 +22,7 @@ const Header = ({ LayoutData }) => {
       <div className={classnames(styles.container, 'container')}>
         <div className={styles.logo}>
           <Link href="/">
-            <a href="home">
+            <a href="/">
               <img className="logo" src={urlFor(logo)} />
             </a>
           </Link>
