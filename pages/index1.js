@@ -1,7 +1,8 @@
 import { groq } from 'next-sanity';
 import Head from 'next/head';
+import React from 'react';
 
-import { getClient } from '../utils/sanity';
+import { getClient } from '@/utils/sanity/client';
 
 const query = groq`*[_type=="home"][0]`;
 

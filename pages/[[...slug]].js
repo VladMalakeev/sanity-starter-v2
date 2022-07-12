@@ -1,3 +1,4 @@
+import router from 'next/router';
 import React from 'react';
 
 import { fetchPage } from '../queries/page';
@@ -15,9 +16,21 @@ export const getStaticProps = async ({ params }) => {
   const path = Array.isArray(slug) ? slug.join('/') : '/';
 
   const sitemap = await fetchSitemap();
-  if (!sitemap.length) return { notFound: true };
+  if (!sitemap.pages.length) return { notFound: true };
 
-  const currentRoute = sitemap.find((route) => route.path.join('/') === path);
+  // redirects take precedence over page content
+  const redirect = sitemap.redirects.find((route) => route.path.join('/') === path);
+  if (redirect) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/${redirect.redirectPath.join('/')}`,
+      },
+    };
+  }
+
+  // if no redirects, we try to get the content of the page
+  const currentRoute = sitemap.pages.find((route) => route.path.join('/') === path);
   if (!currentRoute) return { notFound: true };
 
   const page = await fetchPage(currentRoute.id);
@@ -33,7 +46,7 @@ export const getStaticPaths = async () => {
   const sitemap = await fetchSitemap();
 
   return {
-    paths: sitemap.map((route) => ({
+    paths: sitemap.pages.map((route) => ({
       params: { slug: route.path },
     })),
     fallback: true,

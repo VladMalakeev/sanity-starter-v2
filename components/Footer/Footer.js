@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import Link from 'next/link';
+import React from 'react';
 
 import Socials from '@/components/Socials';
-
-import { urlFor } from '../../utils/sanity';
+import { urlFor } from '@/utils/sanity/client';
 
 import styles from './Footer.module.scss';
 
@@ -24,7 +24,7 @@ const Footer = ({ LayoutData }) => {
         <div className={styles.row}>
           <div className={styles.logo}>
             <Link href="/">
-              <a href="home">
+              <a href="/">
                 <img className="logo" src={urlFor(footerLogo)} />
               </a>
             </Link>
@@ -32,9 +32,13 @@ const Footer = ({ LayoutData }) => {
 
           <div className={styles.nav}>
             <div className={styles.column}>
-              {menuLinkArr.map(({ navLink, navName }, index) => {
+              {menuLinkArr.map(({ navLink, navName }) => {
                 return (
-                  <Link href={`/${navLink.current}`} passHref key={index}>
+                  <Link
+                    href={`/${navLink.current}`}
+                    passHref
+                    key={`${navName}-${navLink}`}
+                  >
                     <a href={navLink.current} className={styles.link}>
                       {navName}
                     </a>
@@ -43,9 +47,13 @@ const Footer = ({ LayoutData }) => {
               })}
             </div>
             <div className={styles.column}>
-              {technicalLinkArr.map(({ navLink, navName }, index) => {
+              {technicalLinkArr.map(({ navLink, navName }) => {
                 return (
-                  <Link href={`/${navLink.current}`} passHref key={index}>
+                  <Link
+                    href={`/${navLink.current}`}
+                    passHref
+                    key={`${navName}-${navLink}`}
+                  >
                     <a href={navLink.current} className={styles.link}>
                       {navName}
                     </a>
