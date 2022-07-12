@@ -11,10 +11,9 @@
     "lint": "next lint",
     "stylelint": "stylelint 'src/**/*{.css,.scss}'",
     "stylelint:fix": "stylelint 'src/**/*{.css,.scss}' --fix",
-    "install": "npm i studio/"
+    "install": "cd studio && npm i"
   },
   "dependencies": {
-    "@sanity/cli": "^2.29.3",
     "@sanity/image-url": "^1.0.1",
     "classnames": "^2.3.1",
     "groq": "^2.29.3",
