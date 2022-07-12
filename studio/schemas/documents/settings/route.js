@@ -1,10 +1,16 @@
 import { ImLink } from 'react-icons/im';
 
-import { REDIRECT_TYPES } from '../../../../utils/sanity/consants';
+// import { REDIRECT_TYPES } from '../../../../utils/sanity/consants';
 import { sanityClient } from '../../../helpers/client';
 import { RouteReferenceItem } from '../../../src/components/routing/RouteReferenceItem';
 import { TITLE_FIELD } from '../../helpers/fields';
 import { listFormat } from '../../helpers/functions';
+
+const REDIRECT_TYPES = {
+  customPage: 'customPage',
+  // firstChild: 'firstChild',
+  // lastChild: 'lastChild'
+};
 
 const route = {
   name: 'route',
