@@ -1,6 +1,6 @@
 import groq from 'groq';
 
-import { getClient } from '@/utils/sanity';
+import { getClient } from '@/utils/sanity/client';
 
 const pageQuery = groq`
   *[_type in $pageTypes && _id == $id][0]{
