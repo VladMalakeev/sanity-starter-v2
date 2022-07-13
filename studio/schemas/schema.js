@@ -3,20 +3,16 @@
 import schemaTypes from 'all:part:@sanity/base/schema-type';
 import createSchema from 'part:@sanity/base/schema-creator';
 
-// We import object and document schemas
-import route from './documents/settings/route';
-import routeSettings from './documents/settings/routeSettings';
-import siteConfig from './documents/settings/siteConfig';
-import staticPages from './documents/settings/staticPages';
-import dynamicPageTypes from './dynamicPageTypes';
-import blockContent from './objects/blockContent';
-
-const settings = [siteConfig, route, routeSettings, staticPages];
-
-const objects = [blockContent];
+import dynamicPages from './documents/domain/dynamicPages/schema';
+import layouts from './documents/layouts/schema';
+import modules from './documents/modules/schema';
+import settings from './documents/settings/schema';
+import objects from './objects/schema';
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
   name: 'default',
-  types: schemaTypes.concat([...settings, ...dynamicPageTypes, ...objects]),
+  types: schemaTypes.concat(
+    [settings, dynamicPages, layouts, modules, objects].flat(),
+  ),
 });

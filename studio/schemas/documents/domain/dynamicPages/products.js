@@ -1,4 +1,4 @@
-import { SLUG_FIELD, TITLE_FIELD } from '../helpers/fields';
+import { SLUG_FIELD, TITLE_FIELD } from '../../../helpers/fields';
 
 const products = {
   name: 'products',

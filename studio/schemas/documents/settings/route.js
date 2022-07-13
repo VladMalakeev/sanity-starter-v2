@@ -1,6 +1,6 @@
 import { ImLink } from 'react-icons/im';
 
-import { REDIRECT_TYPES } from '../../../../utils/sanity/consants';
+import { REDIRECT_TYPES, TEMPLATE_RULES } from '../../../../utils/sanity/consants';
 import { sanityClient } from '../../../helpers/client';
 import { RouteReferenceItem } from '../../../src/components/routing/RouteReferenceItem';
 import { TITLE_FIELD } from '../../helpers/fields';
@@ -19,7 +19,21 @@ const route = {
         collapsable: true,
       },
     },
+    {
+      title: 'Template settings',
+      name: 'template',
+      options: {
+        collapsed: true,
+        collapsable: true,
+      },
+    },
   ],
+  initialValue: {
+    useTemplate: false,
+    templateRules: TEMPLATE_RULES.allChildrenRoutes,
+    useRedirect: false,
+    redirectType: REDIRECT_TYPES.customPage,
+  },
   fields: [
     TITLE_FIELD,
     {
@@ -31,6 +45,21 @@ const route = {
         source: 'title',
         maxLength: 96,
         isUnique: () => true,
+      },
+    },
+    {
+      name: 'parentRoute',
+      type: 'reference',
+      title: 'Parent route',
+      to: [{ type: 'route' }],
+      readOnly: ({ parent }) => !parent?._createdAt,
+      options: {
+        filter: ({ document }) => ({
+          filter: '_type == "route" ',
+          params: {
+            level: document?.level ? document?.level - 1 : null,
+          },
+        }),
       },
     },
     {
@@ -60,23 +89,38 @@ const route = {
       title: 'Select page for redirect',
       type: 'reference',
       to: [{ type: 'route' }],
-      hidden: ({ parent }) => parent.redirectType !== REDIRECT_TYPES.customPage,
+      hidden: ({ parent }) =>
+        !parent.useRedirect || parent.redirectType !== REDIRECT_TYPES.customPage,
       fieldset: 'redirect',
     },
     {
-      name: 'parentRoute',
-      type: 'reference',
-      title: 'Parent route',
-      to: [{ type: 'route' }],
-      readOnly: ({ parent }) => !parent?._createdAt,
+      name: 'useTemplate',
+      title: 'Use template?',
+      type: 'boolean',
+      initialValue: false,
+      fieldset: 'template',
+    },
+    {
+      name: 'templateRules',
+      title: 'Apply template for:',
+      type: 'string',
       options: {
-        filter: ({ document }) => ({
-          filter: '_type == "route" ',
-          params: {
-            level: document?.level ? document?.level - 1 : null,
-          },
-        }),
+        layout: 'radio',
+        direction: 'horizontal',
+        list: Object.values(TEMPLATE_RULES).map((value) => listFormat(value)),
       },
+      initialValue: TEMPLATE_RULES.allChildrenRoutes,
+      hidden: ({ parent }) => !parent.useTemplate,
+      fieldset: 'template',
+    },
+    {
+      name: 'template',
+      title: 'Select template',
+      type: 'reference',
+      to: [{ type: 'templates' }],
+      hidden: ({ parent }) =>
+        !parent.useTemplate || parent.templateRules === TEMPLATE_RULES.dontUse,
+      fieldset: 'template',
     },
   ],
   validation: (Rule) =>

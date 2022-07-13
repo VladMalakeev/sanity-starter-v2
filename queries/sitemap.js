@@ -1,7 +1,7 @@
 import groq from 'groq';
 
 import { getClient } from '@/utils/sanity/client';
-import { REDIRECT_TYPES } from '@/utils/sanity/consants';
+import { REDIRECT_TYPES, TEMPLATE_RULES } from '@/utils/sanity/consants';
 
 import { parentRouteView, slugView } from './components/route';
 
@@ -11,7 +11,10 @@ const routeView = `
   ${parentRouteView},
   useRedirect,
   redirectType,
-  redirectPage
+  redirectPage,
+  useTemplate,
+  templateRules,
+  "templateId": template._ref
 `;
 
 const staticPageView = `
@@ -69,31 +72,40 @@ export const fetchSitemap = async () => {
   };
 
   // helper for recursive searching nested routes
-  const findNestedRoutes = (currentRoute, routesList = []) => {
+  const findNestedRoutes = (currentRoute, routesList = [], templates = []) => {
     if (currentRoute.parentRoute) {
       const parentRoute = getParentRoute(currentRoute.parentRoute._id);
       if (parentRoute?.slug?.length) routesList.push(parentRoute.slug);
-      if (parentRoute?.parentRoute) findNestedRoutes(parentRoute, routesList);
+      if (
+        parentRoute?.useTemplate &&
+        parentRoute?.templateRules !== TEMPLATE_RULES.dontUse
+      )
+        templates.push(parentRoute?.templateId);
+      if (parentRoute?.parentRoute)
+        findNestedRoutes(parentRoute, routesList, templates);
     }
   };
 
   // searching all static routes
   const staticRoutes = sitemap.staticPages.map((page) => {
     const pathList = [];
+    const templates = [];
     if (page.isHomePage) pathList.push('/');
-    else findNestedRoutes(page, pathList);
+    else findNestedRoutes(page, pathList, templates);
 
     return {
       path: pathList.reverse(),
       id: page._id,
       updatedAt: page._updatedAt,
+      template: templates,
     };
   });
 
   // searching all dynamic routes
   const dynamicRoutes = sitemap.dynamicPages.map((page) => {
     const pathList = [page.slug];
-    findNestedRoutes(dynamicPageRoutes[page._type], pathList);
+    const templates = [];
+    findNestedRoutes(dynamicPageRoutes[page._type], pathList, templates);
 
     return {
       path: pathList.reverse(),

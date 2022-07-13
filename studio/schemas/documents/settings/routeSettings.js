@@ -1,5 +1,5 @@
-import dynamicPageTypes from '../../dynamicPageTypes';
 import { listFormat } from '../../helpers/functions';
+import dynamicPages from '../domain/dynamicPages/schema';
 
 const routeSettings = {
   type: 'document',
@@ -22,7 +22,7 @@ const routeSettings = {
               title: 'Dynamic pages type',
               type: 'string',
               options: {
-                list: dynamicPageTypes.map((document) => listFormat(document?.name)),
+                list: dynamicPages.map((document) => listFormat(document?.name)),
               },
               validation: (Rule) =>
                 Rule.required().custom((documentType) => {

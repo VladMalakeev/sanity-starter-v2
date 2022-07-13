@@ -1,11 +1,14 @@
 import S from '@sanity/desk-tool/structure-builder';
 import { GoSettings } from 'react-icons/go';
 import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
+import { ImInsertTemplate } from 'react-icons/im';
 import { MdWeb, MdSettings } from 'react-icons/md';
 import { RiArticleLine } from 'react-icons/ri';
 
 import PagePreview from '../components/previews/PagePreview';
 import { singleton } from './helpers/singleton';
+import layouts from './nodes/layouts.structure';
+import modules from './nodes/modules.structure';
 import routes from './nodes/routes.structure';
 
 const deskStructure = S.list()
@@ -25,7 +28,7 @@ const deskStructure = S.list()
             }),
             routes,
             singleton({
-              title: 'Dynamic routes configuration',
+              title: 'Route configs',
               type: 'routeSettings',
               icon: GoSettings,
             }),
@@ -33,6 +36,11 @@ const deskStructure = S.list()
               .title('Static pages')
               .icon(HiOutlineDocumentDuplicate)
               .child(S.documentTypeList('staticPages').title('Static pages')),
+            layouts,
+            modules,
+            S.documentTypeListItem('templates')
+              .title('Templates')
+              .icon(ImInsertTemplate),
           ]),
       ),
 

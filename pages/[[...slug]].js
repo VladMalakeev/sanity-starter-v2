@@ -1,12 +1,17 @@
-import router from 'next/router';
 import React from 'react';
 
+import { TemplatesBuilder } from '../builders/template.builder';
 import { fetchPage } from '../queries/page';
 import { fetchSitemap } from '../queries/sitemap';
 
-const SlugPage = ({ page }) => {
+const SlugPage = ({ config, page }) => {
   if (!page) return 'loading';
-  return <div>page title - {page.title}</div>;
+  return 'page';
+  // return (
+  //   <>
+  //     <TemplatesBuilder page={page} />
+  //   </>
+  // );
 };
 
 export default SlugPage;
