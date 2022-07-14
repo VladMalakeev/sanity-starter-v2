@@ -1,7 +1,7 @@
 import groq from 'groq';
 
 import { getClient } from '@/utils/sanity/client';
-import { REDIRECT_TYPES } from '@/utils/sanity/consants';
+import { REDIRECT_TYPES, TEMPLATE_RULES } from '@/utils/sanity/consants';
 
 import { parentRouteView, slugView } from './components/route';
 
@@ -11,7 +11,10 @@ const routeView = `
   ${parentRouteView},
   useRedirect,
   redirectType,
-  redirectPage
+  redirectPage,
+  useTemplate,
+  templateRules,
+  "templateId": template._ref
 `;
 
 const staticPageView = `
@@ -69,36 +72,58 @@ export const fetchSitemap = async () => {
   };
 
   // helper for recursive searching nested routes
-  const findNestedRoutes = (currentRoute, routesList = []) => {
+  const findNestedRoutes = (
+    currentRoute,
+    routesList = [],
+    parentTemplate = null,
+  ) => {
+    let template = parentTemplate;
     if (currentRoute.parentRoute) {
       const parentRoute = getParentRoute(currentRoute.parentRoute._id);
       if (parentRoute?.slug?.length) routesList.push(parentRoute.slug);
-      if (parentRoute?.parentRoute) findNestedRoutes(parentRoute, routesList);
+      if (!template && parentRoute?.useTemplate) {
+        if (
+          parentRoute?.templateId &&
+          parentRoute?.templateRules !== TEMPLATE_RULES.dontUse
+        )
+          template = parentRoute?.templateId;
+      }
+      if (parentRoute?.parentRoute)
+        template = findNestedRoutes(parentRoute, routesList, template);
     }
+    return template;
   };
 
   // searching all static routes
   const staticRoutes = sitemap.staticPages.map((page) => {
     const pathList = [];
+    let template = null;
     if (page.isHomePage) pathList.push('/');
-    else findNestedRoutes(page, pathList);
+    else {
+      template = findNestedRoutes(page, pathList, template);
+    }
 
     return {
       path: pathList.reverse(),
-      id: page._id,
+      pageId: page._id,
       updatedAt: page._updatedAt,
+      template: template ?? 'default',
+      pageType: 'staticPages',
     };
   });
 
   // searching all dynamic routes
   const dynamicRoutes = sitemap.dynamicPages.map((page) => {
     const pathList = [page.slug];
-    findNestedRoutes(dynamicPageRoutes[page._type], pathList);
+    let template = null;
+    template = findNestedRoutes(dynamicPageRoutes[page._type], pathList, template);
 
     return {
       path: pathList.reverse(),
-      id: page._id,
+      pageId: page._id,
       updatedAt: page._updatedAt,
+      template: template ?? 'default',
+      pageType: page._type,
     };
   });
 

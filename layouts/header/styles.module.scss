@@ -1,0 +1,26 @@
+.wrapper{
+  height: 100px;
+  width: 100%;
+  background: rgba(238, 238, 238, 0.27);
+  display: flex;
+  align-items: center;
+}
+
+.title{
+  font-size: 26px;
+  margin: 0 20px;
+}
+
+.list{
+  display: flex;
+  align-items: center;
+  margin-left: 150px !important;
+}
+
+.item{
+  margin-left: 20px;
+}
+
+.item:hover{
+  color:blue;
+}
