@@ -1,8 +1,8 @@
 import { LAYOUT_TYPES } from '../../../../utils/sanity/consants';
 
-const footer = {
-  name: LAYOUT_TYPES['footer.layout'],
-  title: 'Footer',
+const breadcrumbs = {
+  name: LAYOUT_TYPES['breadcrumbs.layout'],
+  title: 'BreadCrumbs',
   type: 'document',
   fields: [
     {
@@ -10,12 +10,7 @@ const footer = {
       title: 'Layout name',
       type: 'string',
     },
-    {
-      name: 'description',
-      title: 'Copyright',
-      type: 'text',
-    },
   ],
 };
 
-export default footer;
+export default breadcrumbs;

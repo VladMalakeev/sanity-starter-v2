@@ -72,45 +72,58 @@ export const fetchSitemap = async () => {
   };
 
   // helper for recursive searching nested routes
-  const findNestedRoutes = (currentRoute, routesList = [], templates = []) => {
+  const findNestedRoutes = (
+    currentRoute,
+    routesList = [],
+    parentTemplate = null,
+  ) => {
+    let template = parentTemplate;
     if (currentRoute.parentRoute) {
       const parentRoute = getParentRoute(currentRoute.parentRoute._id);
       if (parentRoute?.slug?.length) routesList.push(parentRoute.slug);
-      if (
-        parentRoute?.useTemplate &&
-        parentRoute?.templateRules !== TEMPLATE_RULES.dontUse
-      )
-        templates.push(parentRoute?.templateId);
+      if (!template && parentRoute?.useTemplate) {
+        if (
+          parentRoute?.templateId &&
+          parentRoute?.templateRules !== TEMPLATE_RULES.dontUse
+        )
+          template = parentRoute?.templateId;
+      }
       if (parentRoute?.parentRoute)
-        findNestedRoutes(parentRoute, routesList, templates);
+        template = findNestedRoutes(parentRoute, routesList, template);
     }
+    return template;
   };
 
   // searching all static routes
   const staticRoutes = sitemap.staticPages.map((page) => {
     const pathList = [];
-    const templates = [];
+    let template = null;
     if (page.isHomePage) pathList.push('/');
-    else findNestedRoutes(page, pathList, templates);
+    else {
+      template = findNestedRoutes(page, pathList, template);
+    }
 
     return {
       path: pathList.reverse(),
-      id: page._id,
+      pageId: page._id,
       updatedAt: page._updatedAt,
-      template: templates,
+      template: template ?? 'default',
+      pageType: 'staticPages',
     };
   });
 
   // searching all dynamic routes
   const dynamicRoutes = sitemap.dynamicPages.map((page) => {
     const pathList = [page.slug];
-    const templates = [];
-    findNestedRoutes(dynamicPageRoutes[page._type], pathList, templates);
+    let template = null;
+    template = findNestedRoutes(dynamicPageRoutes[page._type], pathList, template);
 
     return {
       path: pathList.reverse(),
-      id: page._id,
+      pageId: page._id,
       updatedAt: page._updatedAt,
+      template: template ?? 'default',
+      pageType: page._type,
     };
   });
 

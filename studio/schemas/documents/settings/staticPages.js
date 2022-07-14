@@ -1,4 +1,5 @@
 import { sanityClient } from '../../../helpers/client';
+import modules from '../modules/schema';
 
 const staticPages = {
   name: 'staticPages',
@@ -24,6 +25,21 @@ const staticPages = {
       type: 'reference',
       to: [{ type: 'route' }],
       readOnly: ({ parent }) => parent.isHomePage,
+    },
+    {
+      name: 'modules',
+      title: 'List of modules',
+      type: 'array',
+      of: modules.map((module) => ({
+        title: module.title,
+        name: module.name,
+        type: 'reference',
+        to: [
+          {
+            type: module.name,
+          },
+        ],
+      })),
     },
   ],
   validation: (Rule) =>

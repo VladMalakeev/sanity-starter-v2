@@ -1,5 +1,9 @@
+import AssetSource from 'part:sanity-plugin-media-library/asset-source';
+
+import { LAYOUT_TYPES } from '../../../../utils/sanity/consants';
+
 const header = {
-  name: 'header.layout',
+  name: LAYOUT_TYPES['header.layout'],
   title: 'Header',
   type: 'document',
   fields: [
@@ -12,6 +16,7 @@ const header = {
       name: 'logo',
       title: 'Logo',
       type: 'image',
+      options: { sources: [AssetSource] },
     },
     {
       name: 'menu',

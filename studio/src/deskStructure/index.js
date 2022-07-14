@@ -38,7 +38,7 @@ const deskStructure = S.list()
               .child(S.documentTypeList('staticPages').title('Static pages')),
             layouts,
             modules,
-            S.documentTypeListItem('templates')
+            S.documentTypeListItem('template')
               .title('Templates')
               .icon(ImInsertTemplate),
           ]),

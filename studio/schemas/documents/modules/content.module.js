@@ -1,19 +1,19 @@
 import { MODULE_TYPES } from '../../../../utils/sanity/consants';
 
-const heroModule = {
-  name: MODULE_TYPES['hero.module'],
+const contentModule = {
+  name: MODULE_TYPES['content.module'],
   type: 'document',
-  title: 'Hero module',
+  title: 'Content module',
   fields: [
     {
       name: 'title',
-      title: 'Page title',
+      title: 'Module title',
       type: 'string',
     },
     {
       name: 'description',
       title: 'Page description',
-      type: 'string',
+      type: 'text',
     },
     {
       name: 'image',
@@ -23,4 +23,4 @@ const heroModule = {
   ],
 };
 
-export default heroModule;
+export default contentModule;

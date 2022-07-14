@@ -4,7 +4,7 @@ import { REDIRECT_TYPES, TEMPLATE_RULES } from '../../../../utils/sanity/consant
 import { sanityClient } from '../../../helpers/client';
 import { RouteReferenceItem } from '../../../src/components/routing/RouteReferenceItem';
 import { TITLE_FIELD } from '../../helpers/fields';
-import { listFormat } from '../../helpers/functions';
+import { convertObjectToList } from '../../helpers/functions';
 
 const route = {
   name: 'route',
@@ -76,7 +76,7 @@ const route = {
       title: 'Redirect type',
       options: {
         // TODO:create auto redirect for child pages
-        list: Object.values(REDIRECT_TYPES).map((value) => listFormat(value)),
+        list: convertObjectToList(REDIRECT_TYPES),
       },
       hidden: ({ parent }) => !parent.useRedirect,
       initialValue: REDIRECT_TYPES.customPage,
@@ -107,7 +107,7 @@ const route = {
       options: {
         layout: 'radio',
         direction: 'horizontal',
-        list: Object.values(TEMPLATE_RULES).map((value) => listFormat(value)),
+        list: convertObjectToList(TEMPLATE_RULES),
       },
       initialValue: TEMPLATE_RULES.allChildrenRoutes,
       hidden: ({ parent }) => !parent.useTemplate,
@@ -117,7 +117,7 @@ const route = {
       name: 'template',
       title: 'Select template',
       type: 'reference',
-      to: [{ type: 'templates' }],
+      to: [{ type: 'template' }],
       hidden: ({ parent }) =>
         !parent.useTemplate || parent.templateRules === TEMPLATE_RULES.dontUse,
       fieldset: 'template',
