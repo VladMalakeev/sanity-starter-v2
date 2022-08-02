@@ -15,17 +15,7 @@ export const HeaderLayout = ({ title, logo, menu }) => {
       <ul className={styles.list}>
         {menu.map((item) => (
           <li key={item._key} className={styles.item}>
-            {item.link === 'blog' && (
-              <Link href="blog/pellentesque-habitant-morbi-tristique-senectus-et-netus">
-                {item.title}
-              </Link>
-            )}
-            {item.link === 'products' && (
-              <Link href="products/sonny-playstation-5">{item.title}</Link>
-            )}
-            {!['products', 'blog'].includes(item.link) && (
-              <Link href={item.link}>{item.title}</Link>
-            )}
+            <Link href={item.link}>{item.title}</Link>
           </li>
         ))}
       </ul>
