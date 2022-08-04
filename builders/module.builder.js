@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MODULE_TYPES } from '@/utils/sanity/consants';
+import { MODULE_TYPES } from '@/utils/constants';
 
 import { AboutModule } from '../modules/about/about.module';
 import { ContactsModule } from '../modules/contacts/contacts.module';

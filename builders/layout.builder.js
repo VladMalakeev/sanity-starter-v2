@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LAYOUT_TYPES } from '@/utils/sanity/consants';
+import { LAYOUT_TYPES } from '@/utils/constants';
 
 import { BreadcrumbsLayout } from '../layouts/breadcrumbs/breadcrumbs.layout';
 import { FooterLayout } from '../layouts/footer/footer.layout';

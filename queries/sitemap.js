@@ -1,153 +1,93 @@
 import groq from 'groq';
 
+import { DYNAMIC_TYPES } from '@/utils/constants';
 import { getClient } from '@/utils/sanity/client';
-import { REDIRECT_TYPES, TEMPLATE_RULES } from '@/utils/sanity/consants';
 
-import { parentRouteView, slugView } from './components/route';
+import { parentView, redirectView, slugView } from './components/pageFields';
+import { findNestedPages } from './utils/helpers';
 
-const routeView = `
-  _id,
-  ${slugView},
-  ${parentRouteView},
-  useRedirect,
-  redirectType,
-  redirectPage,
-  useTemplate,
-  templateRules,
-  "templateId": template._ref
-`;
-
-const staticPageView = `
-  _id,
-  isHomePage,
-  _updatedAt,
-  ${parentRouteView}
-`;
-
-const dynamicPageView = `
+const basicFields = `
   _id,
   _type,
   _updatedAt,
+  __i18n_lang,
+  excludeSitemap,
+  ${redirectView}
+`;
+
+const staticPageView = `
+  ${basicFields},
   ${slugView},
+  ${parentView},
+  home,
+`;
+
+const dynamicPageView = `
+  ${basicFields},
+  ${slugView},
+  ${parentView},
 `;
 
 const sitemapQuery = groq`
   {
-    "dynamicPages": *[_type in $pageTypes]{${dynamicPageView}},
-    "staticPages": *[_type == "staticPages"]{${staticPageView}},
-    "routes": *[_type == "route"]{${routeView}}
+    "dynamicPages": *[_type in $dynamicTypes]{${dynamicPageView}},
+    "staticPages": *[_type == "page"]{${staticPageView}},
   }
 `;
 
-const dynamicPagesQuery = groq`
-  *[_type == "routeSettings"][0]{
-    "types": routesList[].documentType,
-    "routes": routesList[]{
-      documentType,
-      ${parentRouteView}
+export const fetchSitemap = async (withRedirects = false) => {
+  const dynamicTypes = Object.keys(DYNAMIC_TYPES);
+  const sitemap = await getClient().fetch(sitemapQuery, { dynamicTypes });
+
+  const getRedirect = (isRedirect, redirect) => {
+    if (isRedirect && redirect?.useRedirect) {
+      const redirectList = [redirect?.slug];
+      findNestedPages(redirect, redirectList, sitemap?.staticPages);
+      redirectList.push(redirect?.locale);
+      return {
+        permanent: redirect?.permanent ?? false,
+        destination: `/${redirectList.reverse().join('/')}`,
+      };
     }
-  }
-`;
-
-export const fetchSitemap = async () => {
-  // dynamic configs using for connecting route documents with dynamic page documents like: posts, products, etc.
-  const dynamicPageConfig = await getClient().fetch(dynamicPagesQuery);
-
-  // converting in obj for convenience
-  const dynamicPageRoutes = Object.fromEntries(
-    dynamicPageConfig.routes.map((route) => [
-      route.documentType,
-      { parentRoute: route.parentRoute },
-    ]),
-  );
-
-  // fetching all routes for recursive searching nesting routes
-  const sitemap = await getClient().fetch(sitemapQuery, {
-    pageTypes: dynamicPageConfig.types,
-  });
-
-  // helper for searching parent route by id
-  const getParentRoute = (parentId) => {
-    return sitemap.routes.find((route) => route._id === parentId);
-  };
-
-  // helper for recursive searching nested routes
-  const findNestedRoutes = (
-    currentRoute,
-    routesList = [],
-    parentTemplate = null,
-  ) => {
-    let template = parentTemplate;
-    if (currentRoute.parentRoute) {
-      const parentRoute = getParentRoute(currentRoute.parentRoute._id);
-      if (parentRoute?.slug?.length) routesList.push(parentRoute.slug);
-      if (!template && parentRoute?.useTemplate) {
-        if (
-          parentRoute?.templateId &&
-          parentRoute?.templateRules !== TEMPLATE_RULES.dontUse
-        )
-          template = parentRoute?.templateId;
-      }
-      if (parentRoute?.parentRoute)
-        template = findNestedRoutes(parentRoute, routesList, template);
-    }
-    return template;
+    return null;
   };
 
   // searching all static routes
-  const staticRoutes = sitemap.staticPages.map((page) => {
-    const pathList = [];
-    let template = null;
-    if (page.isHomePage) pathList.push('/');
-    else {
-      template = findNestedRoutes(page, pathList, template);
-    }
+  const staticPages = sitemap?.staticPages
+    ?.map((page) => {
+      const pathList = [];
 
-    return {
-      path: pathList.reverse(),
-      pageId: page._id,
-      updatedAt: page._updatedAt,
-      template: template ?? 'default',
-      pageType: 'staticPages',
-    };
-  });
-
-  // searching all dynamic routes
-  const dynamicRoutes = sitemap.dynamicPages.map((page) => {
-    const pathList = [page.slug];
-    let template = null;
-    template = findNestedRoutes(dynamicPageRoutes[page._type], pathList, template);
-
-    return {
-      path: pathList.reverse(),
-      pageId: page._id,
-      updatedAt: page._updatedAt,
-      template: template ?? 'default',
-      pageType: page._type,
-    };
-  });
-
-  const redirectPages = sitemap.routes
-    .filter((route) => route.useRedirect && route.redirectType)
-    .map((route) => {
-      const pathList = [route.slug];
-      findNestedRoutes(route, pathList);
-
-      const redirectPathList = [];
-      if (route.redirectType === REDIRECT_TYPES.customPage) {
-        const redirectPage = getParentRoute(route.redirectPage._ref);
-        redirectPathList.push(redirectPage.slug);
-        findNestedRoutes(redirectPage, redirectPathList);
+      if (!page?.home) {
+        pathList.push(page?.slug ?? '');
+        findNestedPages(page, pathList, sitemap?.staticPages);
       }
 
       return {
         path: pathList.reverse(),
-        redirectPath: redirectPathList.reverse(),
+        id: page._id,
+        updatedAt: page._updatedAt,
+        type: 'page',
+        locale: page.__i18n_lang,
+        excludeSitemap: page.excludeSitemap,
+        redirect: getRedirect(withRedirects, page?.redirect),
       };
-    });
+    })
+    .sort((a, b) => a.path.length - b.path.length);
 
-  return {
-    pages: [...staticRoutes, ...dynamicRoutes],
-    redirects: redirectPages,
-  };
+  const dynamicPages = sitemap?.dynamicPages?.map((page) => {
+    const pathList = [page?.slug ?? ''];
+    findNestedPages(page, pathList, sitemap?.staticPages);
+
+    return {
+      path: pathList.reverse(),
+      id: page._id,
+      updatedAt: page._updatedAt,
+      type: page._type,
+      locale: page.__i18n_lang,
+      excludeSitemap: page.excludeSitemap,
+      redirect: getRedirect(withRedirects, page?.redirect),
+    };
+  });
+
+  return [...staticPages, ...dynamicPages];
 };

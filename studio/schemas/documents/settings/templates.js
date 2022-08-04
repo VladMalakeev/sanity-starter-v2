@@ -1,6 +1,6 @@
-import { LAYOUT_POSITIONS } from '../../../../utils/sanity/consants';
+import { LAYOUT_POSITIONS } from '../../../../utils/constants';
 import { sanityClient } from '../../../helpers/client';
-import { SLUG_FIELD, TITLE_FIELD } from '../../helpers/fields';
+import { SLUG_FIELD, TITLE_FIELD } from '../../helpers/commonfields';
 import { convertObjectToList } from '../../helpers/functions';
 import layouts from '../layouts/schema';
 

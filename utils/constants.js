@@ -1,9 +1,3 @@
-export const REDIRECT_TYPES = {
-  customPage: 'customPage',
-  // firstChild: 'firstChild',
-  // lastChild: 'lastChild'
-};
-
 export const TEMPLATE_RULES = {
   allChildrenRoutes: 'allChildrenRoutes',
   onlyCurrentRoute: 'onlyCurrentRoute',
@@ -15,6 +9,11 @@ export const LAYOUT_POSITIONS = {
   'left-sitebar': 'left-sitebar',
   'default-footer': 'default-footer',
   breadcrumbs: 'breadcrumbs',
+};
+
+export const DYNAMIC_TYPES = {
+  blog: 'blog',
+  products: 'products',
 };
 
 export const MODULE_TYPES = {
@@ -30,3 +29,13 @@ export const LAYOUT_TYPES = {
   'sitebar.layout': 'sitebar.layout',
   'breadcrumbs.layout': 'breadcrumbs.layout',
 };
+
+export const TEMPLATE_TYPES = {
+  'default.template': 'default.template',
+  'blog.template': 'blog.template',
+  'product.template': 'product.template',
+};
+
+export const LANGUAGES = [{ locale: 'en', title: 'English', isDefault: true }];
+
+export const BASIC_LOCALE = LANGUAGES.find((language) => language.isDefault).locale;

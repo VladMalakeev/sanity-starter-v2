@@ -2,15 +2,15 @@ import { Box, Spinner } from '@sanity/ui';
 import React, { useEffect, useState } from 'react';
 import { ImLink } from 'react-icons/im';
 
+import { LANGUAGES } from '../../../../utils/constants';
 import { sanityClient } from '../../../helpers/client';
 
-export const RouteReferenceItem = ({ value }) => {
-  const [path, setPath] = useState('');
-
+export const PageReference = ({ value }) => {
+  const [page, setPage] = useState(null);
   useEffect(() => {
     let isMounted = true;
-    getRouteFullPath(value?._id).then((fullPath) => {
-      if (isMounted) setPath(fullPath);
+    getPageFullPath(value).then((pageData) => {
+      if (isMounted) setPage(pageData);
     });
 
     return () => {
@@ -18,52 +18,54 @@ export const RouteReferenceItem = ({ value }) => {
     };
   }, []);
 
+  const locale = LANGUAGES.length > 1 ? `${page.lang}` : '';
+
   return (
     <Box padding={4} display="flex" style={{ alignItems: 'center' }}>
       <ImLink style={{ marginRight: '15px' }} />
       <span style={{ fontSize: '16px', fontWeight: '500' }}>
-        {path || <Spinner muted />}
+        {!page && <Spinner muted />}
+        {page && `${locale}${page?.path ?? ''}`}
       </span>
     </Box>
   );
 };
 
-const sitemapQuery = `
-    *[_type == "route"]{
-       _id,
-      "slug": coalesce(slug.current, ''),
-      "parent": {
-        "slug": parentRoute->slug.current,
-        "_id": parentRoute->_id
-      }
+const nestedRouteQuery = (maxLevel, referenceName) => {
+  let level = ``;
+  let path = ``;
+  let slug = `slug.current,`;
+
+  const nestingPreview = (maxCount) => {
+    let view = `"/"`;
+    for (let i = maxCount; i >= 0; i--) {
+      view = `${view} + level${i} + "/"`;
     }
-`;
-
-export const getRouteFullPath = async (routeId) => {
-  const sitemap = await sanityClient.fetch(sitemapQuery);
-
-  const getParentRoute = (parentId) => {
-    return sitemap.find((route) => route._id === parentId);
+    return view;
   };
 
-  const routesList = sitemap.map((page) => {
-    const pathElements = [page.slug];
-    const findNestedRoutes = (currentRoute) => {
-      if (currentRoute.parent) {
-        const parentRoute = getParentRoute(currentRoute.parent._id);
-        if (parentRoute?.slug?.length) pathElements.push(parentRoute.slug);
-        if (parentRoute?.parent) findNestedRoutes(parentRoute);
-      }
-    };
-    findNestedRoutes(page);
-    return {
-      path: pathElements.reverse().join('/'),
-      id: page._id,
-    };
+  for (let i = 0; i < maxLevel; i++) {
+    level += `"level${i}": ${slug}`;
+    slug = `${referenceName}->${slug}`;
+    path += `defined(level${maxLevel - i - 1}) => ${nestingPreview(
+      maxLevel - i - 1,
+    )}, `;
+  }
+
+  return `*[_type == $type && _id == $id][0]{
+    "lang": __i18n_lang,
+    ${level}  
+  }{
+    "path":select(${path})
+  }`;
+};
+
+export const getPageFullPath = async ({ _id, _type }) => {
+  const query = nestedRouteQuery(10, 'parent');
+  const result = await sanityClient.fetch(query, {
+    type: _type,
+    id: _id,
   });
 
-  const routeItem = routesList.find((route) => route.id === routeId);
-
-  if (!routeItem) return '';
-  return routeItem.path;
+  return result;
 };

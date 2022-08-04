@@ -2,40 +2,20 @@ import groq from 'groq';
 
 import { getClient } from '@/utils/sanity/client';
 
+import { templateView } from './components/pageFields';
+import { configData } from './config';
+import { layoutView } from './layouts';
+import { pagesView } from './pages';
+
 const pageQuery = groq`
   {
-    "pageData": *[_type == $pageType && _id == $pageId][0]{
-      ...,
-      modules []->
-    },
+    "config": ${configData},
+    "page": ${pagesView},
     "template": coalesce(
-        *[_type == "template" && _id == $templateId][0],
-        *[_type == "template" && isDefault == true][0]
-      ){
-      ...,
-      "slug": slug.current,
-      layouts []{
-        positionId,
-        "layout": layout-> {
-          _type == 'header.layout' => {
-            ...,
-            menu []{
-              ...,
-              "link": link->slug.current
-            }
-          },
-          _type == 'footer.layout' => {
-            ...,
-          },
-          _type == 'sitebar.layout' => {
-            ...,
-          },
-          _type == 'breadcrumbs.layout' => {
-            ...
-          },
-        }
-      }
-    }
+        *[_type == "template" && _id == $templateId][0]${templateView},
+        *[_type == "template" && isDefault == true][0]${templateView},
+        ${layoutView}
+      )
   }
 `;
 

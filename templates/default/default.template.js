@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LAYOUT_POSITIONS } from '@/utils/sanity/consants';
+import { LAYOUT_POSITIONS } from '@/utils/constants';
 
 import { LayoutItem } from '../../builders/layout.builder';
 import { PageBuilder } from '../../builders/pageBuilder';

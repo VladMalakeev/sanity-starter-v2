@@ -1,52 +1,31 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { GoSettings } from 'react-icons/go';
-import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
-import { ImInsertTemplate } from 'react-icons/im';
-import { MdWeb, MdSettings } from 'react-icons/md';
-import { RiArticleLine } from 'react-icons/ri';
+import { MdSettings } from 'react-icons/md';
 
 import PagePreview from '../components/previews/PagePreview';
 import { singleton } from './helpers/singleton';
+import { getDynamicDocuments, getDynamicPages } from './nodes/dynamic.structure';
 import layouts from './nodes/layouts.structure';
 import modules from './nodes/modules.structure';
-import routes from './nodes/routes.structure';
+import pages from './nodes/pages.structure';
+import template from './nodes/template.structure';
 
-const deskStructure = S.list()
-  .title('Halo starter')
-  .items([
-    S.listItem()
-      .title('Website')
-      .icon(MdWeb)
-      .child(
-        S.list()
-          .title('Website')
-          .items([
-            singleton({
-              title: 'Site configuration',
-              type: 'siteConfig',
-              icon: MdSettings,
-            }),
-            routes,
-            singleton({
-              title: 'Route configs',
-              type: 'routeSettings',
-              icon: GoSettings,
-            }),
-            S.listItem()
-              .title('Static pages')
-              .icon(HiOutlineDocumentDuplicate)
-              .child(S.documentTypeList('staticPages').title('Static pages')),
-            layouts,
-            modules,
-            S.documentTypeListItem('template')
-              .title('Templates')
-              .icon(ImInsertTemplate),
-          ]),
-      ),
-
-    S.documentTypeListItem('blog').title('Blog').icon(RiArticleLine),
-    S.documentTypeListItem('products').title('Products').icon(RiArticleLine),
-  ]);
+const deskStructure = async () => {
+  const dynamicDocuments = await getDynamicDocuments();
+  return S.list()
+    .title('Halo starter')
+    .items([
+      singleton({
+        title: 'Site configuration',
+        type: 'siteConfig',
+        icon: MdSettings,
+      }),
+      layouts,
+      modules,
+      template,
+      pages,
+      ...getDynamicPages(dynamicDocuments),
+    ]);
+};
 
 export const getDefaultDocumentNode = ({ schemaType }) => {
   /**

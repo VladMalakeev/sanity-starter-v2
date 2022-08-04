@@ -15,6 +15,7 @@
     "@sanity/default-login",
     "@sanity/desk-tool",
     "@sanity/dashboard",
+    "@sanity/document-internationalization",
     "media-library"
   ],
   "env": {
