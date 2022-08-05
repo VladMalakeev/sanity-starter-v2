@@ -1,5 +1,7 @@
 import groq from 'groq';
 
+import { LAYOUT_POSITIONS } from '@/utils/constants';
+
 import { layoutView } from '../layouts';
 
 export const parentView = groq`
@@ -25,12 +27,21 @@ redirect {
   }
 `;
 
-export const templateView = groq`{
-  ...,
-  "slug": slug.current,
-  layouts []{
-    positionId,
-      "layout": layout-> ${layoutView}
-    }
-  }
+export const templateView = groq`
+templateConfig {
+   useTemplate,
+   templateRules,
+   "template":template._ref
+}
 `;
+
+const positions = Object.values(LAYOUT_POSITIONS).map(
+  (position) => `"${position}":${position}->${layoutView},`,
+);
+
+export const templateDocument = groq`{
+  ...,
+  positions {
+   ${positions.join('')}
+  }
+}`;

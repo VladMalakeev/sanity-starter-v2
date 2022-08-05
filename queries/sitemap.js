@@ -3,7 +3,12 @@ import groq from 'groq';
 import { DYNAMIC_TYPES } from '@/utils/constants';
 import { getClient } from '@/utils/sanity/client';
 
-import { parentView, redirectView, slugView } from './components/pageFields';
+import {
+  parentView,
+  redirectView,
+  slugView,
+  templateView,
+} from './components/pageFields';
 import { findNestedPages } from './utils/helpers';
 
 const basicFields = `
@@ -12,7 +17,8 @@ const basicFields = `
   _updatedAt,
   __i18n_lang,
   excludeSitemap,
-  ${redirectView}
+  ${redirectView},
+  ${templateView}
 `;
 
 const staticPageView = `
@@ -56,10 +62,13 @@ export const fetchSitemap = async (withRedirects = false) => {
   const staticPages = sitemap?.staticPages
     ?.map((page) => {
       const pathList = [];
+      let template = page?.templateConfig?.useTemplate
+        ? page?.templateConfig?.template ?? null
+        : null;
 
       if (!page?.home) {
         pathList.push(page?.slug ?? '');
-        findNestedPages(page, pathList, sitemap?.staticPages);
+        template = findNestedPages(page, pathList, sitemap?.staticPages, template);
       }
 
       return {
@@ -70,13 +79,17 @@ export const fetchSitemap = async (withRedirects = false) => {
         locale: page.__i18n_lang,
         excludeSitemap: page.excludeSitemap,
         redirect: getRedirect(withRedirects, page?.redirect),
+        template,
       };
     })
     .sort((a, b) => a.path.length - b.path.length);
 
   const dynamicPages = sitemap?.dynamicPages?.map((page) => {
     const pathList = [page?.slug ?? ''];
-    findNestedPages(page, pathList, sitemap?.staticPages);
+    let template = page?.templateConfig?.useTemplate
+      ? page?.templateConfig?.template ?? null
+      : null;
+    template = findNestedPages(page, pathList, sitemap?.staticPages, template);
 
     return {
       path: pathList.reverse(),
@@ -86,6 +99,7 @@ export const fetchSitemap = async (withRedirects = false) => {
       locale: page.__i18n_lang,
       excludeSitemap: page.excludeSitemap,
       redirect: getRedirect(withRedirects, page?.redirect),
+      template,
     };
   });
 

@@ -9,6 +9,9 @@ export const blog = groq`
   _type == "${DYNAMIC_TYPES.blog}" => {
     ...,
     ${seo},
-    "modules": parent->dynamicConfig.dynamicModules []-> ${modulesView}
-  },
+    "modules": {
+        "before":parent->dynamicConfig.before []-> ${modulesView},
+        "after":parent->dynamicConfig.after []-> ${modulesView}
+    }
+  }
 `;

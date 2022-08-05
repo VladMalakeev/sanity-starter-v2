@@ -1,18 +1,20 @@
 import { PHASE_PRODUCTION_BUILD } from 'next/constants';
 import React from 'react';
 
+import { Seo } from '@/components/Seo/Seo';
 import { BASIC_LOCALE } from '@/utils/constants';
-import { getI18nPath } from '@/utils/functions';
+import { getAlternatePath } from '@/utils/functions';
 
 import { TemplatesBuilder } from '../builders/template.builder';
 import { fetchPage } from '../queries/page';
 import { fetchSitemap } from '../queries/sitemap';
 
-const SlugPage = ({ config, page }) => {
+const SlugPage = ({ config, page, template, alternatePaths }) => {
   if (!page) return 'loading';
   return (
     <>
-      <TemplatesBuilder page={page} />
+      <Seo page={page} config={config} alternatePaths={alternatePaths} />
+      <TemplatesBuilder page={page} template={template} />
     </>
   );
 };
@@ -27,12 +29,12 @@ export const getStaticProps = async ({ params, locale = BASIC_LOCALE }) => {
 
   // 2. fetching all existing pages
   const sitemap = await fetchSitemap(true);
-  if (!sitemap.length) return notFound;
 
+  if (!sitemap.length) return notFound;
   // 3. matching the requested page with existing pages
   const findPageData = (pathString, lang) => {
     return sitemap.find(
-      (page) => page.path.join('/') === pathString && page.__i18n_lang === lang,
+      (page) => page.path.join('/') === pathString && page.locale === lang,
     );
   };
 
@@ -57,13 +59,13 @@ export const getStaticProps = async ({ params, locale = BASIC_LOCALE }) => {
   }
 
   // 4. fetching page data
-  const page = await fetchPage(pageData, locale);
+  const page = await fetchPage(pageData);
   if (!page) return notFound;
+  const alternatePaths = getAlternatePath(sitemap, pageData);
 
-  const pageI18nPaths = getI18nPath(sitemap, pageData);
   const props = {
     ...page,
-    pageI18nPaths,
+    alternatePaths,
   };
 
   return { props, revalidate: 10 };
@@ -74,7 +76,7 @@ export const getStaticPaths = async () => {
 
   return {
     // eslint-disable-next-line camelcase
-    paths: sitemap.pages.map(({ path, __i18n_lang }) => ({
+    paths: sitemap.map(({ path, __i18n_lang }) => ({
       params: { slug: path },
       // eslint-disable-next-line camelcase
       locale: __i18n_lang,

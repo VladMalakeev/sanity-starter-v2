@@ -2,36 +2,27 @@ import React from 'react';
 
 import { LAYOUT_POSITIONS } from '@/utils/constants';
 
-import { LayoutItem } from '../../builders/layout.builder';
-import { PageBuilder } from '../../builders/pageBuilder';
+import { ContentBuilder } from '../../builders/content.builder';
+import { LayoutBuilder } from '../../builders/layout.builder';
 
 import styles from './styles.module.scss';
 
-export const BlogTemplate = ({ page, layouts }) => {
+export const BlogTemplate = ({ page, positions }) => {
   return (
     <div>
       <header>
-        <LayoutItem
-          layouts={layouts}
-          positionId={LAYOUT_POSITIONS['default-header']}
-        />
+        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.header]} />
       </header>
       <div className={styles.contentWrapper}>
         <div className={styles.sitebarWraper}>
-          <LayoutItem
-            layouts={layouts}
-            positionId={LAYOUT_POSITIONS['left-sitebar']}
-          />
+          <LayoutBuilder layout={positions[LAYOUT_POSITIONS.sitebar]} />
         </div>
         <div className={styles.moduleWrapper}>
-          <PageBuilder page={page} />
+          <ContentBuilder page={page} />
         </div>
       </div>
       <footer>
-        <LayoutItem
-          layouts={layouts}
-          positionId={LAYOUT_POSITIONS['default-footer']}
-        />
+        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.footer]} />
       </footer>
     </div>
   );

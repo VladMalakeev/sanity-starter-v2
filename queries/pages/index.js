@@ -8,6 +8,6 @@ export const pagesView = groq`
 *[_type == $pageType && _id == $pageId][0]{
   ${page},
   ${blog},
-  ${product}
+  ${product},
 }
 `;

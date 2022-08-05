@@ -4,11 +4,23 @@ const getParentPage = (parentId, sitemap) => {
 };
 
 // helper for recursive searching nested pages
-export const findNestedPages = (page, routesList = [], sitemap) => {
+export const findNestedPages = (
+  page,
+  routesList = [],
+  sitemap,
+  parentTemplate = null,
+) => {
+  let template = parentTemplate;
   if (page?.parent) {
     const parentPage = getParentPage(page.parent?._id, sitemap);
     if (parentPage?.slug?.length && !parentPage.home)
       routesList.push(parentPage.slug);
-    if (parentPage?.parent) findNestedPages(parentPage, routesList, sitemap);
+    if (!template && parentPage?.templateConfig?.useTemplate) {
+      // eslint-disable-next-line no-param-reassign
+      template = parentPage?.templateConfig?.template ?? null;
+    }
+    if (parentPage?.parent)
+      template = findNestedPages(parentPage, routesList, sitemap, template);
   }
+  return template;
 };

@@ -1,4 +1,4 @@
-export const getI18nPath = (sitemap, sitemapItem) => {
+export const getAlternatePath = (sitemap, sitemapItem) => {
   const pageId = sitemapItem.id.split('__i18n_')[0];
 
   return sitemap.reduce((result = {}, item) => {

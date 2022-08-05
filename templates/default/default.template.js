@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { LAYOUT_POSITIONS } from '@/utils/constants';
+import { LAYOUT_TYPES } from '@/utils/constants';
 
-import { LayoutItem } from '../../builders/layout.builder';
-import { PageBuilder } from '../../builders/pageBuilder';
+import { ContentBuilder } from '../../builders/content.builder';
+import { LayoutBuilder } from '../../builders/layout.builder';
 
 import styles from './styles.module.scss';
 
@@ -11,18 +11,20 @@ export const DefaultTemplate = ({ page, layouts }) => {
   return (
     <div>
       <header>
-        <LayoutItem
-          layouts={layouts}
-          positionId={LAYOUT_POSITIONS['default-header']}
+        <LayoutBuilder
+          layout={layouts.find(
+            (layout) => layout._type === LAYOUT_TYPES['header.layout'],
+          )}
         />
       </header>
       <div className={styles.contentWrapper}>
-        <PageBuilder page={page} />
+        <ContentBuilder page={page} />
       </div>
       <footer>
-        <LayoutItem
-          layouts={layouts}
-          positionId={LAYOUT_POSITIONS['default-footer']}
+        <LayoutBuilder
+          layout={layouts.find(
+            (layout) => layout._type === LAYOUT_TYPES['footer.layout'],
+          )}
         />
       </footer>
     </div>

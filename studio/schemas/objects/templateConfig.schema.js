@@ -1,5 +1,5 @@
 import { TEMPLATE_RULES, TEMPLATE_TYPES } from '../../../utils/constants';
-import { convertObjectToList } from '../helpers/functions';
+import { convertObjectToList, convertObjectToReference } from '../helpers/functions';
 
 const templateConfigSchema = {
   name: 'templateConfig',
@@ -28,9 +28,8 @@ const templateConfigSchema = {
       name: 'template',
       title: 'Select template',
       type: 'reference',
-      to: Object.values(TEMPLATE_TYPES).map((template) => ({ type: template })),
-      hidden: ({ parent }) =>
-        !parent.useTemplate || parent.templateRules === TEMPLATE_RULES.dontUse,
+      to: convertObjectToReference(TEMPLATE_TYPES),
+      hidden: ({ parent }) => !parent.useTemplate,
     },
   ],
 };

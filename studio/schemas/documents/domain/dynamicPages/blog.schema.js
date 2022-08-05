@@ -43,22 +43,27 @@ const blog = {
       },
     },
     {
-      name: 'author',
-      title: 'Author full name',
-      type: 'string',
-      group: 'general',
-    },
-    {
-      name: 'image',
-      title: 'Author image',
-      type: 'image',
-      group: 'general',
-    },
-    {
       name: 'content',
-      title: 'Post content',
-      type: 'text',
+      title: 'Blog content',
+      type: 'object',
       group: 'general',
+      fields: [
+        {
+          name: 'author',
+          title: 'Author full name',
+          type: 'string',
+        },
+        {
+          name: 'image',
+          title: 'Author image',
+          type: 'image',
+        },
+        {
+          name: 'content',
+          title: 'Post content',
+          type: 'text',
+        },
+      ],
     },
     PAGE_REDIRECT,
     PAGE_TEMPLATE,

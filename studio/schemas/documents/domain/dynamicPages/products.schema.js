@@ -43,22 +43,27 @@ const products = {
       },
     },
     {
-      name: 'shortDescription',
-      title: 'Short description',
-      type: 'string',
+      name: 'content',
+      title: 'Blog content',
+      type: 'object',
       group: 'general',
-    },
-    {
-      name: 'image',
-      title: 'Preview image',
-      type: 'image',
-      group: 'general',
-    },
-    {
-      name: 'fullDescription',
-      title: 'Full description',
-      type: 'text',
-      group: 'general',
+      fields: [
+        {
+          name: 'shortDescription',
+          title: 'Short description',
+          type: 'string',
+        },
+        {
+          name: 'image',
+          title: 'Preview image',
+          type: 'image',
+        },
+        {
+          name: 'fullDescription',
+          title: 'Full description',
+          type: 'text',
+        },
+      ],
     },
     PAGE_REDIRECT,
     PAGE_TEMPLATE,

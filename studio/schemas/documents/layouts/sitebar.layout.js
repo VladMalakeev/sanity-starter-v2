@@ -17,13 +17,15 @@ const sitebar = {
     {
       name: 'linksList',
       type: 'array',
-      of: [
-        {
-          name: 'item',
-          title: 'Menu item',
-          type: 'link',
-        },
-      ],
+      options: {
+        list: [
+          { title: 'Building', value: 'building' },
+          { title: 'Master plan', value: 'masterPlan' },
+          { title: 'Infrastructure', value: 'infrastructure' },
+          { title: 'Private Home', value: 'privateHome' },
+        ],
+      },
+      of: [{ type: 'string' }],
     },
   ],
 };

@@ -1,13 +1,12 @@
 export const TEMPLATE_RULES = {
   allChildrenRoutes: 'allChildrenRoutes',
   onlyCurrentRoute: 'onlyCurrentRoute',
-  dontUse: 'dontUse',
 };
 
 export const LAYOUT_POSITIONS = {
-  'default-header': 'default-header',
-  'left-sitebar': 'left-sitebar',
-  'default-footer': 'default-footer',
+  header: 'header',
+  sitebar: 'sitebar',
+  footer: 'footer',
   breadcrumbs: 'breadcrumbs',
 };
 
@@ -31,9 +30,9 @@ export const LAYOUT_TYPES = {
 };
 
 export const TEMPLATE_TYPES = {
-  'default.template': 'default.template',
-  'blog.template': 'blog.template',
-  'product.template': 'product.template',
+  'default.template': 'defaultTemplate',
+  'blog.template': 'blogTemplate',
+  'product.template': 'productTemplate',
 };
 
 export const LANGUAGES = [{ locale: 'en', title: 'English', isDefault: true }];

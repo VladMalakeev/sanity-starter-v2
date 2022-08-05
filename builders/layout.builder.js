@@ -10,24 +10,18 @@ import { SitebarLayout } from '../layouts/sitebar/sitebar.layout';
 export const LayoutBuilder = ({ layout }) => {
   return (
     <>
-      {layout._type === LAYOUT_TYPES['header.layout'] && (
+      {layout?._type === LAYOUT_TYPES['header.layout'] && (
         <HeaderLayout {...layout} />
       )}
-      {layout._type === LAYOUT_TYPES['footer.layout'] && (
+      {layout?._type === LAYOUT_TYPES['footer.layout'] && (
         <FooterLayout {...layout} />
       )}
-      {layout._type === LAYOUT_TYPES['sitebar.layout'] && (
+      {layout?._type === LAYOUT_TYPES['sitebar.layout'] && (
         <SitebarLayout {...layout} />
       )}
-      {layout._type === LAYOUT_TYPES['breadcrumbs.layout'] && (
+      {layout?._type === LAYOUT_TYPES['breadcrumbs.layout'] && (
         <BreadcrumbsLayout {...layout} />
       )}
     </>
   );
-};
-
-export const LayoutItem = ({ positionId, layouts }) => {
-  const layoutObj = layouts.find((item) => item.positionId === positionId);
-  if (!layoutObj) return null;
-  return <LayoutBuilder layout={layoutObj.layout} />;
 };

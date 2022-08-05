@@ -24,9 +24,27 @@ const dynamicConfigSchema = {
       hidden: ({ parent }) => !parent.dynamicParent,
     },
     {
-      name: 'dynamicModules',
-      title: 'Select modules for Dynamic page',
-      description: 'You can set up modules for dynamic page',
+      name: 'before',
+      title: 'Add modules before dynamic page content',
+      hidden: ({ parent }) => !parent.dynamicParent,
+      type: 'array',
+      of: modules.map((module) => ({
+        title: module.title,
+        name: module.name,
+        type: 'reference',
+        to: [
+          {
+            type: module.name,
+          },
+        ],
+        options: {
+          filter: langRefFilter,
+        },
+      })),
+    },
+    {
+      name: 'after',
+      title: 'Add modules after dynamic page content',
       type: 'array',
       hidden: ({ parent }) => !parent.dynamicParent,
       of: modules.map((module) => ({

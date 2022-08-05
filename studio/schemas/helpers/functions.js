@@ -6,6 +6,9 @@ export const listFormat = (value) => ({ title: value, value });
 export const convertObjectToList = (object) =>
   Object.values(object).map((value) => listFormat(value));
 
+export const convertObjectToReference = (object) =>
+  Object.values(object).map((value) => ({ type: value }));
+
 export const langRefFilter = ({ document }) => ({
   filter: `__i18n_lang == "${document.__i18n_lang}"`,
 });

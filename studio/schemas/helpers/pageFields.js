@@ -45,7 +45,7 @@ export const PAGE_REDIRECT = {
 };
 
 export const PAGE_TEMPLATE = {
-  name: 'template',
+  name: 'templateConfig',
   title: 'Template',
   type: 'templateConfig',
   group: 'settings',

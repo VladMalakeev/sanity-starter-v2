@@ -2,27 +2,24 @@ import React from 'react';
 
 import { LAYOUT_POSITIONS } from '@/utils/constants';
 
-import { LayoutItem } from '../../builders/layout.builder';
-import { PageBuilder } from '../../builders/pageBuilder';
+import { ContentBuilder } from '../../builders/content.builder';
+import { LayoutBuilder } from '../../builders/layout.builder';
 
 import styles from './styles.module.scss';
 
-export const ProductsTemplate = ({ page, layouts }) => {
+export const ProductsTemplate = ({ page, positions }) => {
   return (
     <div>
       <header>
-        <LayoutItem
-          layouts={layouts}
-          positionId={LAYOUT_POSITIONS['default-header']}
-        />
+        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.header]} />
       </header>
 
       <div>
-        <LayoutItem layouts={layouts} positionId={LAYOUT_POSITIONS.breadcrumbs} />
+        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.breadcrumbs]} />
       </div>
 
       <div className={styles.contentWrapper}>
-        <PageBuilder page={page} />
+        <ContentBuilder page={page} />
       </div>
     </div>
   );

@@ -2,10 +2,10 @@ import groq from 'groq';
 
 import { MODULE_TYPES } from '@/utils/constants';
 
-const hero = groq`
-  _type == "${MODULE_TYPES['hero.module']}" => {
+const about = groq`
+  _type == "${MODULE_TYPES['about.module']}" => {
     ...
   }
 `;
 
-export default hero;
+export default about;
