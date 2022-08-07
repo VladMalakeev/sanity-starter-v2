@@ -1,24 +1,27 @@
 import React from 'react';
 
+import { TEMPLATE_TYPES } from '@/utils/constants';
+
 import { BlogTemplate } from '../templates/blog/blog.template';
 import { DefaultTemplate } from '../templates/default/default.template';
 import { ProductsTemplate } from '../templates/products/products.template';
-import ModuleBuilder from './module.builder';
 
-export const TemplatesBuilder = ({ page }) => {
-  const { template, pageData } = page;
+const initialTemplate = {
+  _type: TEMPLATE_TYPES.default,
+};
 
-  if (!template) return <ModuleBuilder modules={pageData.modules} />;
+export const TemplatesBuilder = ({ page, template = initialTemplate }) => {
+  if (!template?._type) {
+    return <DefaultTemplate page={page} layouts={template?.layouts} />;
+  }
+
   return (
     <>
-      {template?.slug === 'default-template' && (
-        <DefaultTemplate page={pageData} layouts={template?.layouts} />
+      {template?._type === TEMPLATE_TYPES.blog && (
+        <BlogTemplate page={page} positions={template?.positions} />
       )}
-      {template?.slug === 'blog-template' && (
-        <BlogTemplate page={pageData} layouts={template?.layouts} />
-      )}
-      {template?.slug === 'products-template' && (
-        <ProductsTemplate page={pageData} layouts={template?.layouts} />
+      {template?._type === TEMPLATE_TYPES.product && (
+        <ProductsTemplate page={page} positions={template?.positions} />
       )}
     </>
   );

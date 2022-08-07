@@ -3,27 +3,17 @@ import React from 'react';
 
 import styles from './styles.module.scss';
 
-export const SitebarLayout = ({ title }) => {
+export const SitebarLayout = ({ title, menu }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>{title}</div>
-      <div>
-        <div className={styles.item}>
-          <Link href="blog/pellentesque-eget-gravida-nunc">
-            Pellentesque eget gravida nunc
-          </Link>
-        </div>
-        <div className={styles.item}>
-          <Link href="blog/pellentesque-habitant-morbi-tristique-senectus-et-netus">
-            Pellentesque habitant morbi
-          </Link>
-        </div>
-        <div className={styles.item}>
-          <Link href="blog/in-molestie-semper-magna-non-aliquam-sapien-nam-justo-ante">
-            In-molestie-semper-magna
-          </Link>
-        </div>
-      </div>
+      <ul>
+        {menu.map((item) => (
+          <li key={item._key} className={styles.item}>
+            <Link href={item.url}>{item.label}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

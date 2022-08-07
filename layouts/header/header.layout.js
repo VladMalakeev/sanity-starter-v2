@@ -15,7 +15,7 @@ export const HeaderLayout = ({ title, logo, menu }) => {
       <ul className={styles.list}>
         {menu.map((item) => (
           <li key={item._key} className={styles.item}>
-            <Link href={item.link}>{item.title}</Link>
+            <Link href={item.url}>{item.label}</Link>
           </li>
         ))}
       </ul>

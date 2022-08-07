@@ -1,9 +1,13 @@
-import { LAYOUT_TYPES } from '../../../../utils/sanity/consants';
+import { LAYOUT_TYPES } from '../../../../utils/constants';
+import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
 
 const sitebar = {
-  name: LAYOUT_TYPES['sitebar.layout'],
+  name: LAYOUT_TYPES.sitebar,
   title: 'SiteBar',
   type: 'document',
+  initialValue: {
+    ...DEFAULT_LANGUAGE,
+  },
   fields: [
     {
       name: 'title',
@@ -11,14 +15,14 @@ const sitebar = {
       type: 'string',
     },
     {
-      name: 'linksList',
+      name: 'menu',
+      title: 'Menu items',
       type: 'array',
       of: [
         {
-          name: 'link',
-          title: 'Link Item',
-          type: 'reference',
-          to: [{ type: 'route' }],
+          name: 'item',
+          title: 'Menu item',
+          type: 'link',
         },
       ],
     },

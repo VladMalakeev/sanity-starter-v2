@@ -1,29 +1,24 @@
 import React from 'react';
 
-import { LAYOUT_POSITIONS } from '@/utils/sanity/consants';
+import { LAYOUT_TYPES } from '@/utils/constants';
+import { findLayout } from '@/utils/functions';
 
-import { LayoutItem } from '../../builders/layout.builder';
-import { PageBuilder } from '../../builders/pageBuilder';
+import { ContentBuilder } from '../../builders/content.builder';
+import { LayoutBuilder } from '../../builders/layout.builder';
 
 import styles from './styles.module.scss';
 
-export const DefaultTemplate = ({ page, layouts }) => {
+export const DefaultTemplate = ({ page, layouts = [] }) => {
   return (
     <div>
       <header>
-        <LayoutItem
-          layouts={layouts}
-          positionId={LAYOUT_POSITIONS['default-header']}
-        />
+        <LayoutBuilder layout={findLayout(layouts, LAYOUT_TYPES.header)} />
       </header>
       <div className={styles.contentWrapper}>
-        <PageBuilder page={page} />
+        <ContentBuilder page={page} />
       </div>
       <footer>
-        <LayoutItem
-          layouts={layouts}
-          positionId={LAYOUT_POSITIONS['default-footer']}
-        />
+        <LayoutBuilder layout={findLayout(layouts, LAYOUT_TYPES.footer)} />
       </footer>
     </div>
   );

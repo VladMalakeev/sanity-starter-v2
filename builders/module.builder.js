@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MODULE_TYPES } from '@/utils/sanity/consants';
+import { MODULE_TYPES } from '@/utils/constants';
 
 import { AboutModule } from '../modules/about/about.module';
 import { ContactsModule } from '../modules/contacts/contacts.module';
@@ -9,20 +9,17 @@ import { HeroModule } from '../modules/hero/hero.module';
 
 const ModuleBuilder = ({ modules = [] }) => {
   if (!modules) return null;
-  return modules.map((module) => <ModuleItem key={module._key} module={module} />);
+  return modules.map((module) => <ModuleItem key={module?._id} module={module} />);
 };
 
 const ModuleItem = ({ module }) => {
+  if (!module?._type) return null;
   return (
     <>
-      {module._type === MODULE_TYPES['hero.module'] && <HeroModule {...module} />}
-      {module._type === MODULE_TYPES['about.module'] && <AboutModule {...module} />}
-      {module._type === MODULE_TYPES['contact.module'] && (
-        <ContactsModule {...module} />
-      )}
-      {module._type === MODULE_TYPES['content.module'] && (
-        <ContentModule {...module} />
-      )}
+      {module?._type === MODULE_TYPES.hero && <HeroModule {...module} />}
+      {module?._type === MODULE_TYPES.about && <AboutModule {...module} />}
+      {module?._type === MODULE_TYPES.contact && <ContactsModule {...module} />}
+      {module?._type === MODULE_TYPES.content && <ContentModule {...module} />}
     </>
   );
 };

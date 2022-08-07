@@ -1,52 +1,33 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { GoSettings } from 'react-icons/go';
-import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
-import { ImInsertTemplate } from 'react-icons/im';
-import { MdWeb, MdSettings } from 'react-icons/md';
-import { RiArticleLine } from 'react-icons/ri';
+import { FcServices } from 'react-icons/fc';
 
 import PagePreview from '../components/previews/PagePreview';
 import { singleton } from './helpers/singleton';
+import { getDynamicDocuments, getDynamicPages } from './nodes/dynamic.structure';
 import layouts from './nodes/layouts.structure';
 import modules from './nodes/modules.structure';
-import routes from './nodes/routes.structure';
+import pages from './nodes/pages.structure';
+import { withTemplates } from './nodes/template.structure';
 
-const deskStructure = S.list()
-  .title('Halo starter')
-  .items([
-    S.listItem()
-      .title('Website')
-      .icon(MdWeb)
-      .child(
-        S.list()
-          .title('Website')
-          .items([
-            singleton({
-              title: 'Site configuration',
-              type: 'siteConfig',
-              icon: MdSettings,
-            }),
-            routes,
-            singleton({
-              title: 'Route configs',
-              type: 'routeSettings',
-              icon: GoSettings,
-            }),
-            S.listItem()
-              .title('Static pages')
-              .icon(HiOutlineDocumentDuplicate)
-              .child(S.documentTypeList('staticPages').title('Static pages')),
-            layouts,
-            modules,
-            S.documentTypeListItem('template')
-              .title('Templates')
-              .icon(ImInsertTemplate),
-          ]),
-      ),
+const deskStructure = async () => {
+  const dynamicDocuments = await getDynamicDocuments();
 
-    S.documentTypeListItem('blog').title('Blog').icon(RiArticleLine),
-    S.documentTypeListItem('products').title('Products').icon(RiArticleLine),
-  ]);
+  const items = [
+    singleton({
+      title: 'Site configuration',
+      type: 'siteConfig',
+      icon: FcServices,
+    }),
+    S.divider(),
+    layouts,
+    modules,
+    S.divider(),
+    pages,
+    ...getDynamicPages(dynamicDocuments),
+  ];
+
+  return S.list().title('Halo starter').items(withTemplates(items));
+};
 
 export const getDefaultDocumentNode = ({ schemaType }) => {
   /**

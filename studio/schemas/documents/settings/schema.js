@@ -1,7 +1,3 @@
-import route from './route';
-import routeSettings from './routeSettings';
-import siteConfig from './siteConfig';
-import staticPages from './staticPages';
-import templates from './templates';
+import configSchema from './config.schema';
 
-export default [route, routeSettings, siteConfig, staticPages, templates];
+export default [configSchema];

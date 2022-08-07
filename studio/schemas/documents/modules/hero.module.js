@@ -1,9 +1,14 @@
-import { MODULE_TYPES } from '../../../../utils/sanity/consants';
+import { MODULE_TYPES } from '../../../../utils/constants';
+import { DEFAULT_LANGUAGE, I18N } from '../../helpers/commonfields';
 
 const heroModule = {
-  name: MODULE_TYPES['hero.module'],
+  name: MODULE_TYPES.hero,
   type: 'document',
   title: 'Hero module',
+  i18n: I18N,
+  initialValue: {
+    ...DEFAULT_LANGUAGE,
+  },
   fields: [
     {
       name: 'title',

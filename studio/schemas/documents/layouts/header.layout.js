@@ -1,11 +1,15 @@
 import AssetSource from 'part:sanity-plugin-media-library/asset-source';
 
-import { LAYOUT_TYPES } from '../../../../utils/sanity/consants';
+import { LAYOUT_TYPES } from '../../../../utils/constants';
+import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
 
 const header = {
-  name: LAYOUT_TYPES['header.layout'],
+  name: LAYOUT_TYPES.header,
   title: 'Header',
   type: 'document',
+  initialValue: {
+    ...DEFAULT_LANGUAGE,
+  },
   fields: [
     {
       name: 'title',
@@ -26,20 +30,7 @@ const header = {
         {
           name: 'item',
           title: 'Menu item',
-          type: 'object',
-          fields: [
-            {
-              name: 'title',
-              title: 'Item title',
-              type: 'string',
-            },
-            {
-              name: 'link',
-              title: 'Item link',
-              type: 'reference',
-              to: [{ type: 'route' }],
-            },
-          ],
+          type: 'link',
         },
       ],
     },

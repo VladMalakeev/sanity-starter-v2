@@ -1,9 +1,13 @@
-import { MODULE_TYPES } from '../../../../utils/sanity/consants';
+import { MODULE_TYPES } from '../../../../utils/constants';
+import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
 
 const aboutModule = {
-  name: MODULE_TYPES['about.module'],
+  name: MODULE_TYPES.about,
   type: 'document',
   title: 'About module',
+  initialValue: {
+    ...DEFAULT_LANGUAGE,
+  },
   fields: [
     {
       name: 'title',

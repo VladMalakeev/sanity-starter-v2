@@ -2,47 +2,23 @@ import groq from 'groq';
 
 import { getClient } from '@/utils/sanity/client';
 
+import { templateData } from './components/template';
+import { configData } from './config';
+import { pageData } from './pages';
+
 const pageQuery = groq`
   {
-    "pageData": *[_type == $pageType && _id == $pageId][0]{
-      ...,
-      modules []->
-    },
-    "template": coalesce(
-        *[_type == "template" && _id == $templateId][0],
-        *[_type == "template" && isDefault == true][0]
-      ){
-      ...,
-      "slug": slug.current,
-      layouts []{
-        positionId,
-        "layout": layout-> {
-          _type == 'header.layout' => {
-            ...,
-            menu []{
-              ...,
-              "link": link->slug.current
-            }
-          },
-          _type == 'footer.layout' => {
-            ...,
-          },
-          _type == 'sitebar.layout' => {
-            ...,
-          },
-          _type == 'breadcrumbs.layout' => {
-            ...
-          },
-        }
-      }
-    }
+    "config": ${configData},
+    "page": ${pageData},
+    "template": ${templateData}
   }
 `;
 
-export const fetchPage = async (route) => {
+export const fetchPage = async (page) => {
   return getClient().fetch(pageQuery, {
-    templateId: route.template,
-    pageId: route.pageId,
-    pageType: route.pageType,
+    templateId: page.template,
+    pageId: page.id,
+    pageType: page.type,
+    locale: page.locale,
   });
 };
