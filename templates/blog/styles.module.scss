@@ -1,0 +1,14 @@
+.contentWrapper{
+  min-height: calc(100vh - 200px);
+  width: 100%;
+  display: flex;
+  background: lightyellow;
+}
+
+.sitebarWraper{
+  width: 20%;
+}
+
+.moduleWrapper{
+  width: 80%
+}

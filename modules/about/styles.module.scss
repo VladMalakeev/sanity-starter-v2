@@ -1,0 +1,33 @@
+.wrapper{
+  height: 100%;
+  width: 100%;
+  background: #eae9e9;
+  padding: 100px;
+}
+
+.title{
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.itemsWrap{
+  display: flex;
+  justify-content: space-between;
+}
+
+.item{
+  background: white;
+  width: 30%;
+  border-radius:15px;
+  padding: 20px;
+  font-size: 18px;
+}
+
+.item p{
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: center;
+}
+

@@ -2,22 +2,23 @@ import groq from 'groq';
 
 import { getClient } from '@/utils/sanity/client';
 
+import { templateData } from './components/template';
+import { configData } from './config';
+import { pageData } from './pages';
+
 const pageQuery = groq`
-  *[_type in $pageTypes && _id == $id][0]{
-    ...
+  {
+    "config": ${configData},
+    "page": ${pageData},
+    "template": ${templateData}
   }
 `;
 
-const dynamicPagesQuery = groq`
-  *[_type == "routeSettings"][0]{
-    "types": routesList[].documentType,
-  }.types
-`;
-
-export const fetchPage = async (id) => {
-  const dynamicPageTypes = await getClient().fetch(dynamicPagesQuery);
+export const fetchPage = async (page) => {
   return getClient().fetch(pageQuery, {
-    id,
-    pageTypes: [...dynamicPageTypes, 'staticPages'],
+    templateId: page.template,
+    pageId: page.id,
+    pageType: page.type,
+    locale: page.locale,
   });
 };

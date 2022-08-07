@@ -14,7 +14,6 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/cli": "^2.29.3",
     "@sanity/base": "^2.29.3",
     "@sanity/components": "^2.14.0",
     "@sanity/core": "^2.29.3",
@@ -24,6 +23,7 @@
     "@sanity/desk-tool": "^2.29.3",
     "@sanity/ui": "^0.37.12",
     "@sanity/vision": "^2.29.3",
+    "@sanity/document-internationalization": "^0.3.5",
     "eslint": "^8.6.0",
     "prop-types": "^15.7",
     "react": "^17.0.2",

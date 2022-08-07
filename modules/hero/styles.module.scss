@@ -1,0 +1,27 @@
+.wrapper{
+  height: 400px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+.contentWrapper{
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(199, 199, 199, 0) 0%, rgb(22 22 22 / 41%) 100%);
+  padding: 50px;
+}
+
+.title{
+  font-size: 66px;
+  color:white;
+  margin-left: 100px;
+  font-weight: bold;
+}
+
+.description{
+  font-size: 36px;
+  color:white;
+  margin-left: 100px;
+  font-weight: bold;
+}
