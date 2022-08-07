@@ -2,7 +2,7 @@ import { MODULE_TYPES } from '../../../../utils/constants';
 import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
 
 const contactsModule = {
-  name: MODULE_TYPES['contact.module'],
+  name: MODULE_TYPES.contact,
   type: 'document',
   title: 'Contacts module',
   initialValue: {

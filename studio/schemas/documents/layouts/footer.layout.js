@@ -2,7 +2,7 @@ import { LAYOUT_TYPES } from '../../../../utils/constants';
 import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
 
 const footer = {
-  name: LAYOUT_TYPES['footer.layout'],
+  name: LAYOUT_TYPES.footer,
   title: 'Footer',
   type: 'document',
   initialValue: {

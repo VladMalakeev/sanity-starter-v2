@@ -1,40 +1,39 @@
-export const TEMPLATE_RULES = {
-  allChildrenRoutes: 'allChildrenRoutes',
-  onlyCurrentRoute: 'onlyCurrentRoute',
-};
-
-export const LAYOUT_POSITIONS = {
-  header: 'header',
-  sitebar: 'sitebar',
-  footer: 'footer',
-  breadcrumbs: 'breadcrumbs',
-};
-
 export const DYNAMIC_TYPES = {
-  blog: 'blog',
-  products: 'products',
+  blog: 'blog_page',
+  product: 'product_page',
 };
 
 export const MODULE_TYPES = {
-  'hero.module': 'hero.module',
-  'about.module': 'about.module',
-  'content.module': 'content.module',
-  'contact.module': 'contact.module',
+  hero: 'hero_module',
+  about: 'about_module',
+  content: 'content_module',
+  contact: 'contact_module',
 };
 
+// layouts
 export const LAYOUT_TYPES = {
-  'header.layout': 'header.layout',
-  'footer.layout': 'footer.layout',
-  'sitebar.layout': 'sitebar.layout',
-  'breadcrumbs.layout': 'breadcrumbs.layout',
+  header: 'header_layout',
+  footer: 'footer_layout',
+  sitebar: 'sitebar_layout',
+  breadcrumbs: 'breadcrumbs_layout',
 };
 
+export const LAYOUT_POSITIONS = {
+  header: 'header_position',
+  sitebar: 'sitebar_position',
+  footer: 'footer_position',
+  breadcrumbs: 'breadcrumbs_position',
+};
+
+// templates
 export const TEMPLATE_TYPES = {
-  'default.template': 'defaultTemplate',
-  'blog.template': 'blogTemplate',
-  'product.template': 'productTemplate',
+  blog: 'blog_template',
+  product: 'product_template',
 };
 
+export const TEMPLATE_TYPES_LIST = Object.values(TEMPLATE_TYPES);
+
+// languages
 export const LANGUAGES = [{ locale: 'en', title: 'English', isDefault: true }];
 
 export const BASIC_LOCALE = LANGUAGES.find((language) => language.isDefault).locale;

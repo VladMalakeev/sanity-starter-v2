@@ -2,7 +2,7 @@ import { MdSettings } from 'react-icons/md';
 
 import { fieldTranslation } from '../../helpers/functions';
 
-const siteConfig = {
+const configSchema = {
   name: 'siteConfig',
   type: 'document',
   title: 'Site configuration',
@@ -42,4 +42,4 @@ const siteConfig = {
   ],
 };
 
-export default siteConfig;
+export default configSchema;

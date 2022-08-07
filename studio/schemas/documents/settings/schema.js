@@ -1,5 +1,3 @@
-import page from './page';
-import siteConfig from './siteConfig';
-import templates from './templates';
+import configSchema from './config.schema';
 
-export default [siteConfig, templates, page];
+export default [configSchema];

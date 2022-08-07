@@ -58,17 +58,24 @@ export const fetchSitemap = async (withRedirects = false) => {
     return null;
   };
 
+  const initialTemplate = (page) => {
+    if (page?.templateConfig?.useTemplate) {
+      return page?.templateConfig?.currentTemplate ?? null;
+    }
+    return null;
+  };
+
   // searching all static routes
   const staticPages = sitemap?.staticPages
     ?.map((page) => {
       const pathList = [];
-      let template = page?.templateConfig?.useTemplate
-        ? page?.templateConfig?.template ?? null
-        : null;
+      const template = {
+        id: initialTemplate(page),
+      };
 
       if (!page?.home) {
         pathList.push(page?.slug ?? '');
-        template = findNestedPages(page, pathList, sitemap?.staticPages, template);
+        findNestedPages(page, pathList, sitemap?.staticPages, template);
       }
 
       return {
@@ -79,17 +86,18 @@ export const fetchSitemap = async (withRedirects = false) => {
         locale: page.__i18n_lang,
         excludeSitemap: page.excludeSitemap,
         redirect: getRedirect(withRedirects, page?.redirect),
-        template,
+        template: template.id,
       };
     })
     .sort((a, b) => a.path.length - b.path.length);
 
   const dynamicPages = sitemap?.dynamicPages?.map((page) => {
     const pathList = [page?.slug ?? ''];
-    let template = page?.templateConfig?.useTemplate
-      ? page?.templateConfig?.template ?? null
-      : null;
-    template = findNestedPages(page, pathList, sitemap?.staticPages, template);
+    const template = {
+      id: initialTemplate(page),
+    };
+
+    findNestedPages(page, pathList, sitemap?.staticPages, template);
 
     return {
       path: pathList.reverse(),
@@ -99,7 +107,7 @@ export const fetchSitemap = async (withRedirects = false) => {
       locale: page.__i18n_lang,
       excludeSitemap: page.excludeSitemap,
       redirect: getRedirect(withRedirects, page?.redirect),
-      template,
+      template: template.id,
     };
   });
 

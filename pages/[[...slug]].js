@@ -61,8 +61,8 @@ export const getStaticProps = async ({ params, locale = BASIC_LOCALE }) => {
   // 4. fetching page data
   const page = await fetchPage(pageData);
   if (!page) return notFound;
-  const alternatePaths = getAlternatePath(sitemap, pageData);
 
+  const alternatePaths = getAlternatePath(sitemap, pageData);
   const props = {
     ...page,
     alternatePaths,
@@ -75,11 +75,9 @@ export const getStaticPaths = async () => {
   const sitemap = await fetchSitemap();
 
   return {
-    // eslint-disable-next-line camelcase
-    paths: sitemap.map(({ path, __i18n_lang }) => ({
+    paths: sitemap.map(({ path, locale }) => ({
       params: { slug: path },
-      // eslint-disable-next-line camelcase
-      locale: __i18n_lang,
+      locale,
     })),
     fallback: true,
   };

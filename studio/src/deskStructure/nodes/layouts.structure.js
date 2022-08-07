@@ -1,11 +1,11 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { AiOutlineLayout } from 'react-icons/ai';
+import { FcViewDetails } from 'react-icons/fc';
 
 import layoutsSchema from '../../../schemas/documents/layouts/schema';
 
 const layouts = S.listItem()
   .title('Layouts')
-  .icon(AiOutlineLayout)
+  .icon(FcViewDetails)
   .child(
     S.list()
       .title('Layouts')
@@ -13,7 +13,7 @@ const layouts = S.listItem()
         layoutsSchema.map((layout) =>
           S.documentTypeListItem(layout.name)
             .title(layout.title)
-            .icon(AiOutlineLayout),
+            .icon(FcViewDetails),
         ),
       ),
   );

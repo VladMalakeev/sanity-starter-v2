@@ -1,30 +1,28 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { ImInsertTemplate } from 'react-icons/im';
+import { FcTemplate } from 'react-icons/fc';
 
-import { TEMPLATE_TYPES } from '../../../../utils/constants';
+import { TEMPLATE_TYPES_LIST } from '../../../../utils/constants';
+import { nameFromType } from '../../../helpers/functions';
 import { singleton } from '../helpers/singleton';
 
-export default S.listItem()
+const templateStructure = S.listItem()
   .title('Templates')
-  .icon(ImInsertTemplate)
+  .icon(FcTemplate)
   .child(
     S.list()
       .title('Templates')
-      .items([
-        singleton({
-          title: 'Default Template',
-          type: TEMPLATE_TYPES['default.template'],
-          icon: ImInsertTemplate,
-        }),
-        singleton({
-          title: 'Blog Template',
-          type: TEMPLATE_TYPES['blog.template'],
-          icon: ImInsertTemplate,
-        }),
-        singleton({
-          title: 'Product Template',
-          type: TEMPLATE_TYPES['product.template'],
-          icon: ImInsertTemplate,
-        }),
-      ]),
+      .items(
+        TEMPLATE_TYPES_LIST.map((template) =>
+          singleton({
+            title: nameFromType(template),
+            type: template,
+            icon: FcTemplate,
+          }),
+        ),
+      ),
   );
+
+export const withTemplates = (items) => {
+  if (TEMPLATE_TYPES_LIST?.length) items.push(templateStructure);
+  return items;
+};

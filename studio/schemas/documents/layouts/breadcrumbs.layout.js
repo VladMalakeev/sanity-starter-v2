@@ -2,7 +2,7 @@ import { LAYOUT_TYPES } from '../../../../utils/constants';
 import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
 
 const breadcrumbs = {
-  name: LAYOUT_TYPES['breadcrumbs.layout'],
+  name: LAYOUT_TYPES.breadcrumbs,
   title: 'BreadCrumbs',
   type: 'document',
   initialValue: {

@@ -15,8 +15,8 @@ export const Seo = ({ config, page, alternatePaths }) => {
   if (!config?.seo) return null;
 
   const seoCanonical = `${config.domain}${router.asPath}`;
-  const seoTitle = page.seo?.title || page.title;
-  const seoDescription = page.seo?.description || config.seo?.description;
+  const seoTitle = page?.seo?.title || page?.title;
+  const seoDescription = page?.seo?.description || config.seo?.description;
 
   const imageObject = page?.seo?.image ?? config?.seo?.image;
   const seoImage = {
@@ -42,7 +42,7 @@ export const Seo = ({ config, page, alternatePaths }) => {
     <>
       <NextSeo
         title={seoTitle}
-        titleTemplate={`%s - ${config.name}`}
+        titleTemplate={`%s - ${config?.name ?? 'untitled'}`}
         description={seoDescription}
         canonical={seoCanonical}
         openGraph={{
@@ -51,7 +51,7 @@ export const Seo = ({ config, page, alternatePaths }) => {
           title: seoTitle,
           description: seoDescription,
           images: [seoImage],
-          site_name: config.name,
+          site_name: config?.name ?? 'untitled',
         }}
         additionalLinkTags={languageLinks()}
       />

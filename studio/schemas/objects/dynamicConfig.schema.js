@@ -1,5 +1,5 @@
-import dynamicTypes from '../documents/domain/dynamicPages/schema';
 import modules from '../documents/modules/schema';
+import { dynamicPages } from '../documents/pages/schema';
 import { langRefFilter, listFormat } from '../helpers/functions';
 
 const dynamicConfigSchema = {
@@ -19,7 +19,7 @@ const dynamicConfigSchema = {
       type: 'string',
       title: 'Select dynamic page type',
       options: {
-        list: dynamicTypes.map((type) => listFormat(type.name)),
+        list: dynamicPages.map((type) => listFormat(type.name)),
       },
       hidden: ({ parent }) => !parent.dynamicParent,
     },

@@ -6,7 +6,7 @@ import { seo } from '../components/seo';
 import { modulesView } from '../modules';
 
 export const product = groq`
-  _type == "${DYNAMIC_TYPES.products}" => {
+  _type == "${DYNAMIC_TYPES.product}" => {
     ...,
     ${seo},
     "modules": {

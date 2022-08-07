@@ -1,3 +1,5 @@
+import { DYNAMIC_TYPES } from '../../../utils/constants';
+
 const pageRedirectSchema = {
   name: 'page.redirect',
   title: 'Page redirect',
@@ -21,7 +23,10 @@ const pageRedirectSchema = {
       name: 'redirectPage',
       title: 'Select page for redirect',
       type: 'reference',
-      to: [{ type: 'page' }, { type: 'blog' }],
+      to: [
+        { type: 'page' },
+        ...Object.values(DYNAMIC_TYPES).map((type) => ({ type })),
+      ],
       hidden: ({ parent }) => !parent.useRedirect,
       options: {
         filter: ({ document }) => ({

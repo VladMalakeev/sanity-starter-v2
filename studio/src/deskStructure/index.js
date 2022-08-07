@@ -1,5 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { MdSettings } from 'react-icons/md';
+import { FcServices } from 'react-icons/fc';
 
 import PagePreview from '../components/previews/PagePreview';
 import { singleton } from './helpers/singleton';
@@ -7,24 +7,24 @@ import { getDynamicDocuments, getDynamicPages } from './nodes/dynamic.structure'
 import layouts from './nodes/layouts.structure';
 import modules from './nodes/modules.structure';
 import pages from './nodes/pages.structure';
-import template from './nodes/template.structure';
+import { withTemplates } from './nodes/template.structure';
 
 const deskStructure = async () => {
   const dynamicDocuments = await getDynamicDocuments();
-  return S.list()
-    .title('Halo starter')
-    .items([
-      singleton({
-        title: 'Site configuration',
-        type: 'siteConfig',
-        icon: MdSettings,
-      }),
-      layouts,
-      modules,
-      template,
-      pages,
-      ...getDynamicPages(dynamicDocuments),
-    ]);
+
+  const items = [
+    singleton({
+      title: 'Site configuration',
+      type: 'siteConfig',
+      icon: FcServices,
+    }),
+    layouts,
+    modules,
+    pages,
+    ...getDynamicPages(dynamicDocuments),
+  ];
+
+  return S.list().title('Halo starter').items(withTemplates(items));
 };
 
 export const getDefaultDocumentNode = ({ schemaType }) => {

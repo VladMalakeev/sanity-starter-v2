@@ -1,4 +1,4 @@
-import { BASIC_LOCALE, LANGUAGES } from '@/utils/sanity/consants';
+import { BASIC_LOCALE, LANGUAGES } from '@/utils/constants';
 
 import { fetchSitemap } from '../../queries/sitemap';
 

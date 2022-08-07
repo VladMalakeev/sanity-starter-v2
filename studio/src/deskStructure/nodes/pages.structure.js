@@ -1,4 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder';
+import { FcRules, FcOpenedFolder } from 'react-icons/fc';
 
 import { sanityClient } from '../../../helpers/client';
 
@@ -45,6 +46,7 @@ const createPagesQuery = (type, maxLevel, referenceName) => {
 
 export default S.listItem()
   .title('Pages')
+  .icon(FcRules)
   .child(async () => {
     const query = createPagesQuery('page', 10, 'parent');
     const pages = await sanityClient.fetch(query);
@@ -53,6 +55,7 @@ export default S.listItem()
       .items([
         S.listItem()
           .title('Level 1')
+          .icon(FcOpenedFolder)
           .child(
             S.documentTypeList('page')
               .title('Level 1')
@@ -63,6 +66,7 @@ export default S.listItem()
           .map((page) =>
             S.listItem()
               .title(`Level ${page.level}`)
+              .icon(FcOpenedFolder)
               .child(
                 S.documentTypeList('page')
                   .title(`Level ${page.level}`)

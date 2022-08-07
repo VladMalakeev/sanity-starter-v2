@@ -7,3 +7,6 @@ export const getAlternatePath = (sitemap, sitemapItem) => {
     return result;
   }, {});
 };
+
+export const findLayout = (layouts, type) =>
+  layouts.find((layout) => layout?._type === type);

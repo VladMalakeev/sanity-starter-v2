@@ -8,18 +8,13 @@ import { HeaderLayout } from '../layouts/header/header.layout';
 import { SitebarLayout } from '../layouts/sitebar/sitebar.layout';
 
 export const LayoutBuilder = ({ layout }) => {
+  if (!layout?._type) return null;
   return (
     <>
-      {layout?._type === LAYOUT_TYPES['header.layout'] && (
-        <HeaderLayout {...layout} />
-      )}
-      {layout?._type === LAYOUT_TYPES['footer.layout'] && (
-        <FooterLayout {...layout} />
-      )}
-      {layout?._type === LAYOUT_TYPES['sitebar.layout'] && (
-        <SitebarLayout {...layout} />
-      )}
-      {layout?._type === LAYOUT_TYPES['breadcrumbs.layout'] && (
+      {layout?._type === LAYOUT_TYPES?.header && <HeaderLayout {...layout} />}
+      {layout?._type === LAYOUT_TYPES?.footer && <FooterLayout {...layout} />}
+      {layout?._type === LAYOUT_TYPES?.sitebar && <SitebarLayout {...layout} />}
+      {layout?._type === LAYOUT_TYPES?.breadcrumbs && (
         <BreadcrumbsLayout {...layout} />
       )}
     </>

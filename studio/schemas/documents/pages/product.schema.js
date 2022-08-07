@@ -1,20 +1,21 @@
-import { DYNAMIC_TYPES } from '../../../../../utils/constants';
-import { PageReference } from '../../../../src/components/routing/RouteReferenceItem';
-import { DEFAULT_LANGUAGE, I18N, pageGroups } from '../../../helpers/commonfields';
-import { dynamicSlugValidation } from '../../../helpers/functions';
+import { FcShop } from 'react-icons/fc';
+
+import { DYNAMIC_TYPES } from '../../../../utils/constants';
+import { PageReference } from '../../../src/components/routing/RouteReferenceItem';
+import { DEFAULT_LANGUAGE, I18N, pageGroups } from '../../helpers/commonfields';
+import { dynamicSlugValidation } from '../../helpers/functions';
 import {
   EXCLUDE_SITEMAP,
   PAGE_REDIRECT,
   PAGE_SEO,
   PAGE_SLUG,
-  PAGE_TEMPLATE,
   PAGE_TITLE,
-} from '../../../helpers/pageFields';
+} from '../../helpers/pageFields';
 
-const blog = {
-  name: DYNAMIC_TYPES.blog,
+const products = {
+  name: DYNAMIC_TYPES.product,
   type: 'document',
-  title: 'Blog',
+  title: 'Products',
   i18n: I18N,
   initialValue: {
     ...DEFAULT_LANGUAGE,
@@ -49,24 +50,23 @@ const blog = {
       group: 'general',
       fields: [
         {
-          name: 'author',
-          title: 'Author full name',
+          name: 'shortDescription',
+          title: 'Short description',
           type: 'string',
         },
         {
           name: 'image',
-          title: 'Author image',
+          title: 'Preview image',
           type: 'image',
         },
         {
-          name: 'content',
-          title: 'Post content',
+          name: 'fullDescription',
+          title: 'Full description',
           type: 'text',
         },
       ],
     },
     PAGE_REDIRECT,
-    PAGE_TEMPLATE,
   ],
   validation: (Rule) =>
     Rule.custom(async (fields) => {
@@ -79,7 +79,11 @@ const blog = {
         return 'Please select redirect page';
 
       // templates validation
-      if (fields?.template?.useTemplate && !fields?.template?.template)
+      if (
+        fields?.templateConfig?.useTemplate &&
+        !fields?.templateConfig?.currentPage &&
+        !fields?.templateConfig?.childPages
+      )
         return 'Please select template';
 
       return true;
@@ -87,9 +91,16 @@ const blog = {
   preview: {
     select: {
       title: 'title',
+      content: 'content',
+    },
+    prepare({ title, content }) {
+      return {
+        title,
+        media: content?.image ?? FcShop,
+      };
     },
     component: PageReference,
   },
 };
 
-export default blog;
+export default products;

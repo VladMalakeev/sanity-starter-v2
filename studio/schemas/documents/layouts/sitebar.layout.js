@@ -2,7 +2,7 @@ import { LAYOUT_TYPES } from '../../../../utils/constants';
 import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
 
 const sitebar = {
-  name: LAYOUT_TYPES['sitebar.layout'],
+  name: LAYOUT_TYPES.sitebar,
   title: 'SiteBar',
   type: 'document',
   initialValue: {

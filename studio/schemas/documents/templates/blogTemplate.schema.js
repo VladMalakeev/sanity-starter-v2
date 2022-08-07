@@ -1,30 +1,36 @@
-import { ImInsertTemplate } from 'react-icons/im';
+import { FcTemplate } from 'react-icons/fc';
 
 import {
   LAYOUT_POSITIONS,
   LAYOUT_TYPES,
   TEMPLATE_TYPES,
 } from '../../../../utils/constants';
-import { convertObjectToReference } from '../../helpers/functions';
+import {
+  convertObjectToReference,
+  defaultTemplateValidation,
+} from '../../helpers/functions';
 
 const blogTemplate = {
-  name: TEMPLATE_TYPES['blog.template'],
+  name: TEMPLATE_TYPES?.blog,
   title: 'Blog Template',
   type: 'document',
-
   preview: {
     prepare() {
       return {
         title: 'Blog Template',
-        media: ImInsertTemplate,
+        media: FcTemplate,
       };
     },
+  },
+  initialValue: {
+    isDefault: false,
   },
   fields: [
     {
       name: 'isDefault',
       title: 'Set as default template',
       type: 'boolean',
+      initialValue: false,
     },
     {
       name: 'positions',
@@ -52,6 +58,12 @@ const blogTemplate = {
       ],
     },
   ],
+  validation: (Rule) =>
+    Rule.custom(async (fields) => {
+      const isDefaultError = await defaultTemplateValidation(fields);
+      if (isDefaultError) return isDefaultError;
+      return true;
+    }),
 };
 
 export default blogTemplate;

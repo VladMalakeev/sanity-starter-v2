@@ -1,8 +1,9 @@
 import S from '@sanity/desk-tool/structure-builder';
+import { FcNews } from 'react-icons/fc';
 
 import { sanityClient } from '../../../helpers/client';
 import { getTemplateName } from '../../../helpers/functions';
-import dynamicPages from '../../../schemas/documents/domain/dynamicPages/schema';
+import { dynamicPages } from '../../../schemas/documents/pages/schema';
 
 export const getDynamicDocuments = async () => {
   let query = ``;
@@ -18,6 +19,7 @@ export const getDynamicPages = (documents) => {
     .map((item) => {
       return item.documents.map((document) => {
         return S.listItem()
+          .icon(FcNews)
           .title(document.title)
           .child(
             S.documentTypeList(item.type)

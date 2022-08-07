@@ -1,7 +1,15 @@
-import { DYNAMIC_TYPES, LANGUAGES } from '../../../utils/constants';
+import {
+  DYNAMIC_TYPES,
+  LANGUAGES,
+  TEMPLATE_TYPES_LIST,
+} from '../../../utils/constants';
 import { sanityClient } from '../../helpers/client';
+import { nameFromType } from '../../helpers/functions';
 
-export const listFormat = (value) => ({ title: value, value });
+export const listFormat = (value) => ({
+  title: nameFromType(value),
+  value,
+});
 
 export const convertObjectToList = (object) =>
   Object.values(object).map((value) => listFormat(value));
@@ -83,5 +91,17 @@ export const pagesSlugValidation = async (fields) => {
     return 'Such a slug already exists at the level of one of the dynamic types. Please set a unique slug value';
   if (result.pageType)
     return 'Such slug already exists on the current pages level. Please set a unique slug value';
+  return false;
+};
+
+export const defaultTemplateValidation = async (fields) => {
+  if (fields?.isDefault) {
+    const defaultTemplate = await sanityClient.fetch(
+      '*[_type in $types && isDefault == true && !(_id in path("drafts.**"))][0]',
+      { types: TEMPLATE_TYPES_LIST },
+    );
+    if (defaultTemplate && defaultTemplate._type !== fields._type)
+      return 'Default template already defined';
+  }
   return false;
 };

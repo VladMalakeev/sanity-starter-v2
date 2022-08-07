@@ -1,4 +1,4 @@
-import { BsBookmarkStar } from 'react-icons/bs';
+import { FcDocument } from 'react-icons/fc';
 
 import { sanityClient } from '../../../helpers/client';
 import { PageReference } from '../../../src/components/routing/RouteReferenceItem';
@@ -9,7 +9,6 @@ import {
   PAGE_REDIRECT,
   PAGE_SEO,
   PAGE_SLUG,
-  PAGE_TEMPLATE,
   PAGE_TITLE,
 } from '../../helpers/pageFields';
 import modules from '../modules/schema';
@@ -31,7 +30,7 @@ const pageSchema = {
     prepare({ title }) {
       return {
         title,
-        media: BsBookmarkStar,
+        media: FcDocument,
       };
     },
     component: PageReference,
@@ -103,7 +102,6 @@ const pageSchema = {
       group: 'settings',
     },
     PAGE_REDIRECT,
-    PAGE_TEMPLATE,
   ],
   validation: (Rule) =>
     Rule.custom(async (fields) => {
@@ -136,7 +134,11 @@ const pageSchema = {
         return 'Please select redirect page';
 
       // templates validation
-      if (fields?.template?.useTemplate && !fields?.template?.template)
+      if (
+        fields?.templateConfig?.useTemplate &&
+        !fields?.templateConfig?.currentPage &&
+        !fields?.templateConfig?.childPages
+      )
         return 'Please select template';
 
       return true;

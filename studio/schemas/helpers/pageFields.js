@@ -1,3 +1,6 @@
+import { TEMPLATE_TYPES } from '../../../utils/constants';
+import { convertObjectToReference } from './functions';
+
 export const PAGE_TITLE = {
   title: 'Page name',
   description: 'Give an obvious name to the page',
@@ -47,6 +50,28 @@ export const PAGE_REDIRECT = {
 export const PAGE_TEMPLATE = {
   name: 'templateConfig',
   title: 'Template',
-  type: 'templateConfig',
+  type: 'object',
+  fields: [
+    {
+      name: 'useTemplate',
+      title: 'Use template?',
+      type: 'boolean',
+      initialValue: false,
+    },
+    {
+      name: 'currentPage',
+      title: 'Current page template',
+      type: 'reference',
+      to: convertObjectToReference(TEMPLATE_TYPES),
+      hidden: ({ parent }) => !parent.useTemplate,
+    },
+    {
+      name: 'childPages',
+      title: 'Child pages template',
+      type: 'reference',
+      to: convertObjectToReference(TEMPLATE_TYPES),
+      hidden: ({ parent }) => !parent.useTemplate,
+    },
+  ],
   group: 'settings',
 };

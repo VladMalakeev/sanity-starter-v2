@@ -1,14 +1,17 @@
-import { ImInsertTemplate } from 'react-icons/im';
+import { FcTemplate } from 'react-icons/fc';
 
 import {
   LAYOUT_POSITIONS,
   LAYOUT_TYPES,
   TEMPLATE_TYPES,
 } from '../../../../utils/constants';
-import { convertObjectToReference } from '../../helpers/functions';
+import {
+  convertObjectToReference,
+  defaultTemplateValidation,
+} from '../../helpers/functions';
 
 const productTemplate = {
-  name: TEMPLATE_TYPES['product.template'],
+  name: TEMPLATE_TYPES?.product,
   title: 'Product Template',
   type: 'document',
   singleton: true,
@@ -16,15 +19,19 @@ const productTemplate = {
     prepare() {
       return {
         title: 'Product Template',
-        media: ImInsertTemplate,
+        media: FcTemplate,
       };
     },
+  },
+  initialValue: {
+    isDefault: false,
   },
   fields: [
     {
       name: 'isDefault',
       title: 'Set as default template',
       type: 'boolean',
+      initialValue: false,
     },
     {
       name: 'positions',
@@ -46,6 +53,12 @@ const productTemplate = {
       ],
     },
   ],
+  validation: (Rule) =>
+    Rule.custom(async (fields) => {
+      const isDefaultError = await defaultTemplateValidation(fields);
+      if (isDefaultError) return isDefaultError;
+      return true;
+    }),
 };
 
 export default productTemplate;
