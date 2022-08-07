@@ -39,6 +39,7 @@ export const getStaticProps = async ({ params, locale = BASIC_LOCALE }) => {
   };
 
   let pageData = findPageData(path, locale);
+
   // try to find requested page with basic locale if initial locale not found
   if (!pageData && locale !== BASIC_LOCALE) {
     pageData = findPageData(path, BASIC_LOCALE);

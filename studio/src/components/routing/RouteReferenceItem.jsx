@@ -25,7 +25,7 @@ export const PageReference = ({ value }) => {
       <ImLink style={{ marginRight: '15px' }} />
       <span style={{ fontSize: '16px', fontWeight: '500' }}>
         {!page && <Spinner muted />}
-        {page && `${locale}${page?.path ?? ''}`}
+        {page && `${locale}${page.home ? '/ (home page)' : page?.path ?? ''}`}
       </span>
     </Box>
   );
@@ -54,9 +54,11 @@ const nestedRouteQuery = (maxLevel, referenceName) => {
 
   return `*[_type == $type && _id == $id][0]{
     "lang": __i18n_lang,
+    home,
     ${level}  
   }{
-    "path":select(${path})
+    "path":select(${path}),
+    home
   }`;
 };
 

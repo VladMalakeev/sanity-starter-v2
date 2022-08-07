@@ -14,11 +14,14 @@ const productTemplate = {
   name: TEMPLATE_TYPES?.product,
   title: 'Product Template',
   type: 'document',
-  singleton: true,
+
   preview: {
-    prepare() {
+    select: {
+      title: 'title',
+    },
+    prepare({ title }) {
       return {
-        title: 'Product Template',
+        title,
         media: FcTemplate,
       };
     },
@@ -27,6 +30,11 @@ const productTemplate = {
     isDefault: false,
   },
   fields: [
+    {
+      name: 'title',
+      title: 'Template title',
+      type: 'string',
+    },
     {
       name: 'isDefault',
       title: 'Set as default template',

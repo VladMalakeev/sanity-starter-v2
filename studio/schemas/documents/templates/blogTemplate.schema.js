@@ -15,9 +15,12 @@ const blogTemplate = {
   title: 'Blog Template',
   type: 'document',
   preview: {
-    prepare() {
+    select: {
+      title: 'title',
+    },
+    prepare({ title }) {
       return {
-        title: 'Blog Template',
+        title,
         media: FcTemplate,
       };
     },
@@ -26,6 +29,11 @@ const blogTemplate = {
     isDefault: false,
   },
   fields: [
+    {
+      name: 'title',
+      title: 'Template title',
+      type: 'string',
+    },
     {
       name: 'isDefault',
       title: 'Set as default template',

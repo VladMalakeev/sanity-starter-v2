@@ -18,8 +18,10 @@ const deskStructure = async () => {
       type: 'siteConfig',
       icon: FcServices,
     }),
+    S.divider(),
     layouts,
     modules,
+    S.divider(),
     pages,
     ...getDynamicPages(dynamicDocuments),
   ];

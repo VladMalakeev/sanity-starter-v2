@@ -24,7 +24,7 @@ const layoutsList = Object.values(LAYOUT_TYPES).map((layout) => `"${layout}"`);
 
 export const templateData = groq`
   coalesce(
-    *[_type == $template][0]${templateDocument},
+    *[_type in [${templateList}] && _id == $templateId][0]${templateDocument},
     *[_type in [${templateList}] && isDefault == true][0]${templateDocument},
     {
       "layouts": *[_type in [${layoutsList}]]${layoutView}

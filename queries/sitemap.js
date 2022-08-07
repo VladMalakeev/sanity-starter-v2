@@ -42,7 +42,7 @@ const sitemapQuery = groq`
 `;
 
 export const fetchSitemap = async (withRedirects = false) => {
-  const dynamicTypes = Object.keys(DYNAMIC_TYPES);
+  const dynamicTypes = Object.values(DYNAMIC_TYPES);
   const sitemap = await getClient().fetch(sitemapQuery, { dynamicTypes });
 
   const getRedirect = (isRedirect, redirect) => {
@@ -60,7 +60,7 @@ export const fetchSitemap = async (withRedirects = false) => {
 
   const initialTemplate = (page) => {
     if (page?.templateConfig?.useTemplate) {
-      return page?.templateConfig?.currentTemplate ?? null;
+      return page?.templateConfig?.currentPage ?? null;
     }
     return null;
   };

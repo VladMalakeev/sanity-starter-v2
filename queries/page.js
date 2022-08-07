@@ -16,7 +16,7 @@ const pageQuery = groq`
 
 export const fetchPage = async (page) => {
   return getClient().fetch(pageQuery, {
-    template: page.template,
+    templateId: page.template,
     pageId: page.id,
     pageType: page.type,
     locale: page.locale,
