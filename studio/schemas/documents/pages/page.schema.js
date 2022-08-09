@@ -1,9 +1,9 @@
 import { FcDocument } from 'react-icons/fc';
 
-import { sanityClient } from '../../../helpers/client';
+import { MAX_NESTING_LEVEL } from '../../../../utils/constants';
 import { PageReference } from '../../../src/components/routing/RouteReferenceItem';
 import { DEFAULT_LANGUAGE, I18N, pageGroups } from '../../helpers/commonfields';
-import { langRefFilter, pagesSlugValidation } from '../../helpers/functions';
+import { getLoopPreventionFilter } from '../../helpers/functions';
 import {
   EXCLUDE_SITEMAP,
   PAGE_REDIRECT,
@@ -11,7 +11,16 @@ import {
   PAGE_SLUG,
   PAGE_TITLE,
 } from '../../helpers/pageFields';
-import modules from '../modules/schema';
+import {
+  dynamicPageValidation,
+  homePageValidation,
+  pageRedirectValidation,
+  pagesSlugValidation,
+  pageTemplatesValidation,
+} from '../../helpers/validation';
+import { commonModules as modules } from '../modules/schema';
+
+const nestingFilter = getLoopPreventionFilter(MAX_NESTING_LEVEL);
 
 const pageSchema = {
   type: 'document',
@@ -69,31 +78,20 @@ const pageSchema = {
       readOnly: ({ document }) => !document?._createdAt || document.home,
       options: {
         filter: ({ document }) => ({
-          filter: `_type == "page" && !home && nesting && _id != $id && !(_id in path("drafts.**"))`,
-          params: { id: document._id.split('.').pop() },
+          filter: `_type == "page" && !home && nesting && _id != $id && !(_id in path("drafts.**")) && ${nestingFilter}`,
+          params: {
+            id: document._id.split('.').pop(),
+          },
         }),
       },
     },
     {
       name: 'modules',
       title: 'List of modules',
-      type: 'array',
+      type: 'modules',
       description:
         'select any modules to create page content, also you can change the order of modules',
       group: 'general',
-      of: modules.map((module) => ({
-        title: module.title,
-        name: module.name,
-        type: 'reference',
-        to: [
-          {
-            type: module.name,
-          },
-        ],
-        options: {
-          filter: langRefFilter,
-        },
-      })),
     },
     {
       name: 'dynamicConfig',
@@ -105,43 +103,23 @@ const pageSchema = {
   ],
   validation: (Rule) =>
     Rule.custom(async (fields) => {
-      // slug validation
+      const errorsList = [];
       const slugError = await pagesSlugValidation(fields);
-      if (slugError) return slugError;
-      // home gage validation
-      const isHomePageAssigned = await sanityClient.fetch(
-        '*[_type == "page" && home == true && !(_id match "drafts.**")]',
-      );
+      if (slugError) errorsList.push(slugError);
 
-      if (isHomePageAssigned.length) {
-        const currentPage = isHomePageAssigned.find(
-          (page) => String(fields._id).indexOf(page._id) !== -1,
-        );
+      const homePageError = await homePageValidation(fields);
+      if (homePageError) errorsList.push(homePageError);
 
-        if (!currentPage && fields.home)
-          return 'Only one home page entity must be defined!';
-      }
+      const dynamicPageError = dynamicPageValidation(fields);
+      if (dynamicPageError) errorsList.push(dynamicPageError);
 
-      // dynamic type validation
-      if (
-        fields?.dynamicConfig?.dynamicParent &&
-        !fields?.dynamicConfig?.dynamicType
-      )
-        return 'Please select dynamic type';
+      const redirectError = pageRedirectValidation(fields);
+      if (redirectError) errorsList.push(redirectError);
 
-      // redirects validation
-      if (fields?.redirect?.useRedirect && !fields?.redirect?.redirectPage)
-        return 'Please select redirect page';
+      const templateError = pageTemplatesValidation(fields);
+      if (templateError) errorsList.push(templateError);
 
-      // templates validation
-      if (
-        fields?.templateConfig?.useTemplate &&
-        !fields?.templateConfig?.currentPage &&
-        !fields?.templateConfig?.childPages
-      )
-        return 'Please select template';
-
-      return true;
+      return errorsList;
     }),
 };
 

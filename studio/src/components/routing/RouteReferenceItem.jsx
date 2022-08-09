@@ -2,7 +2,7 @@ import { Box, Spinner } from '@sanity/ui';
 import React, { useEffect, useState } from 'react';
 import { ImLink } from 'react-icons/im';
 
-import { LANGUAGES } from '../../../../utils/constants';
+import { LANGUAGES, MAX_NESTING_LEVEL } from '../../../../utils/constants';
 import { sanityClient } from '../../../helpers/client';
 
 export const PageReference = ({ value }) => {
@@ -63,7 +63,7 @@ const nestedRouteQuery = (maxLevel, referenceName) => {
 };
 
 export const getPageFullPath = async ({ _id, _type }) => {
-  const query = nestedRouteQuery(10, 'parent');
+  const query = nestedRouteQuery(MAX_NESTING_LEVEL, 'parent');
   const result = await sanityClient.fetch(query, {
     type: _type,
     id: _id,
