@@ -18,7 +18,7 @@ export const PageReference = ({ value }) => {
     };
   }, []);
 
-  const locale = LANGUAGES.length > 1 ? `${page.lang}` : '';
+  const locale = LANGUAGES.length > 1 ? `${page?.lang}` : '';
 
   return (
     <Box padding={4} display="flex" style={{ alignItems: 'center' }}>
@@ -58,7 +58,8 @@ const nestedRouteQuery = (maxLevel, referenceName) => {
     ${level}  
   }{
     "path":select(${path}),
-    home
+    home,
+    lang
   }`;
 };
 

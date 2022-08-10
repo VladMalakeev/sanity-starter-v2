@@ -2,7 +2,7 @@ import S from '@sanity/desk-tool/structure-builder';
 import { FcOpenedFolder, FcTemplate } from 'react-icons/fc';
 
 import { TEMPLATE_TYPES_LIST } from '../../../../utils/constants';
-import { nameFromType } from '../../../helpers/functions';
+import { filterByBasicLocale, nameFromType } from '../../../helpers/functions';
 import { singleton } from '../helpers/singleton';
 
 const singleTemplate = (template) => {
@@ -18,8 +18,8 @@ const multipleTemplates = (template) => {
     .title(nameFromType(template))
     .icon(FcOpenedFolder)
     .child(
-      S.documentList()
-        .filter('_type == $type')
+      S.documentTypeList(template)
+        .filter(`_type == $type && ${filterByBasicLocale}`)
         .params({ type: template })
         .title(nameFromType(template)),
     );
@@ -34,8 +34,8 @@ const templateStructure = S.listItem()
       .items(
         TEMPLATE_TYPES_LIST.map((template) => {
           // !!! We can represent a template as a singleton or as a list of templates. !!!
-          return singleTemplate(template);
-          // return multipleTemplates(template)
+          // return singleTemplate(template);
+          return multipleTemplates(template);
         }),
       ),
   );

@@ -38,6 +38,9 @@ export const TEMPLATE_TYPES = {
 export const TEMPLATE_TYPES_LIST = Object.values(TEMPLATE_TYPES);
 
 // languages
-export const LANGUAGES = [{ locale: 'en', title: 'English', isDefault: true }];
+export const LANGUAGES = [
+  { locale: 'en', title: 'English', isDefault: true },
+  { locale: 'de', title: 'Deutsch' },
+];
 
 export const BASIC_LOCALE = LANGUAGES.find((language) => language.isDefault).locale;

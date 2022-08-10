@@ -60,11 +60,14 @@ export const pagesSlugValidation = async (fields) => {
 
 export const defaultTemplateValidation = async (fields) => {
   if (fields?.isDefault) {
-    const defaultTemplate = await sanityClient.fetch(
-      '*[_type in $types && isDefault == true && !(_id in path("drafts.**"))][0]',
-      { types: TEMPLATE_TYPES_LIST },
+    const defaultTemplates = await sanityClient.fetch(
+      '*[_type in $types && isDefault == true && __i18n_lang == $locale]',
+      {
+        types: TEMPLATE_TYPES_LIST,
+        locale: fields.__i18n_lang,
+      },
     );
-    if (defaultTemplate && defaultTemplate._type !== fields._type)
+    if (defaultTemplates && defaultTemplates.length > 1)
       return 'Default template already defined';
   }
   return false;
