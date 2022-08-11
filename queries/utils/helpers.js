@@ -4,7 +4,12 @@ const getParentPage = (parentId, sitemap) => {
 };
 
 // helper for recursive searching nested pages
-export const findNestedPages = (page, routesList = [], sitemap, template) => {
+export const findNestedPages = (
+  page,
+  routesList = [],
+  sitemap,
+  template = { id: null },
+) => {
   if (page?.parent) {
     const parentPage = getParentPage(page.parent?._id, sitemap);
     if (parentPage?.slug?.length && !parentPage.home)
