@@ -5,16 +5,14 @@ import {
   LAYOUT_TYPES,
   TEMPLATE_TYPES,
 } from '../../../../utils/constants';
-import {
-  convertObjectToReference,
-  defaultTemplateValidation,
-} from '../../helpers/functions';
+import { DEFAULT_LANGUAGE, I18N } from '../../helpers/commonfields';
+import { convertObjectToReference } from '../../helpers/functions';
+import { defaultTemplateValidation } from '../../helpers/validation';
 
 const productTemplate = {
   name: TEMPLATE_TYPES?.product,
   title: 'Product Template',
   type: 'document',
-
   preview: {
     select: {
       title: 'title',
@@ -26,7 +24,9 @@ const productTemplate = {
       };
     },
   },
+  i18n: I18N,
   initialValue: {
+    ...DEFAULT_LANGUAGE,
     isDefault: false,
   },
   fields: [

@@ -1,13 +1,11 @@
 import groq from 'groq';
 
-import { blog } from './blog';
-import { page } from './page';
-import { product } from './product';
+import { dynamicPage } from './dynamicPage';
+import { staticPage } from './staticPage';
 
 export const pageData = groq`
 *[_type == $pageType && _id == $pageId][0]{
-  ${page},
-  ${blog},
-  ${product},
+  ${staticPage},
+  ${dynamicPage},
 }
 `;

@@ -1,6 +1,5 @@
-import modules from '../documents/modules/schema';
 import { dynamicPages } from '../documents/pages/schema';
-import { langRefFilter, listFormat } from '../helpers/functions';
+import { listFormat } from '../helpers/functions';
 
 const dynamicConfigSchema = {
   name: 'dynamicConfig',
@@ -27,39 +26,13 @@ const dynamicConfigSchema = {
       name: 'before',
       title: 'Add modules before dynamic page content',
       hidden: ({ parent }) => !parent.dynamicParent,
-      type: 'array',
-      of: modules.map((module) => ({
-        title: module.title,
-        name: module.name,
-        type: 'reference',
-        to: [
-          {
-            type: module.name,
-          },
-        ],
-        options: {
-          filter: langRefFilter,
-        },
-      })),
+      type: 'modules',
     },
     {
       name: 'after',
       title: 'Add modules after dynamic page content',
-      type: 'array',
+      type: 'modules',
       hidden: ({ parent }) => !parent.dynamicParent,
-      of: modules.map((module) => ({
-        title: module.title,
-        name: module.name,
-        type: 'reference',
-        to: [
-          {
-            type: module.name,
-          },
-        ],
-        options: {
-          filter: langRefFilter,
-        },
-      })),
     },
   ],
 };

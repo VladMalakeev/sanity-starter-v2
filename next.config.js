@@ -13,7 +13,7 @@ module.exports = {
     domains: ['cdn.sanity.io'],
   },
   i18n: {
-    locales: ['en'],
+    locales: ['en', 'de'],
     defaultLocale: 'en',
     localeDetection: true,
   },

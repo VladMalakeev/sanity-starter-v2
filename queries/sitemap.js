@@ -1,6 +1,6 @@
 import groq from 'groq';
 
-import { DYNAMIC_TYPES } from '@/utils/constants';
+import { BASIC_LOCALE, DYNAMIC_TYPES } from '@/utils/constants';
 import { getClient } from '@/utils/sanity/client';
 
 import {
@@ -49,7 +49,7 @@ export const fetchSitemap = async (withRedirects = false) => {
     if (isRedirect && redirect?.useRedirect) {
       const redirectList = [redirect?.slug];
       findNestedPages(redirect, redirectList, sitemap?.staticPages);
-      redirectList.push(redirect?.locale);
+      if (redirect?.locale !== BASIC_LOCALE) redirectList.push(redirect?.locale);
       return {
         permanent: redirect?.permanent ?? false,
         destination: `/${redirectList.reverse().join('/')}`,

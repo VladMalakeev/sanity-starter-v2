@@ -2,6 +2,7 @@ import S from '@sanity/desk-tool/structure-builder';
 import { FcRules, FcOpenedFolder } from 'react-icons/fc';
 
 import { sanityClient } from '../../../helpers/client';
+import { filterByBasicLocale } from '../../../helpers/functions';
 
 const pageItem = async (parentId) => {
   const page = await sanityClient.fetch(
@@ -11,7 +12,9 @@ const pageItem = async (parentId) => {
   if (page) {
     return S.documentTypeList('page')
       .title(page?.title ?? 'untitled')
-      .filter(`_type == "page" && parent._ref == $parentId`)
+      .filter(
+        `_type == "page" && parent._ref == $parentId && ${filterByBasicLocale}`,
+      )
       .params({ parentId })
       .initialValueTemplates([
         S.initialValueTemplateItem('pages', {
@@ -59,7 +62,9 @@ export default S.listItem()
           .child(
             S.documentTypeList('page')
               .title('Level 1')
-              .filter('_type == "page" && !defined(parent)'),
+              .filter(
+                `_type == "page" && !defined(parent) && ${filterByBasicLocale}`,
+              ),
           ),
         ...pages
           .filter((page) => page.documents.length)
@@ -70,7 +75,9 @@ export default S.listItem()
               .child(
                 S.documentTypeList('page')
                   .title(`Level ${page.level}`)
-                  .filter(`_type == "page" && _id in $documents && nesting == true`)
+                  .filter(
+                    `_type == "page" && _id in $documents && nesting == true && ${filterByBasicLocale}`,
+                  )
                   .params({ documents: page.documents })
                   .child(pageItem),
               ),

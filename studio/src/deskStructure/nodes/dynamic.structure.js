@@ -2,13 +2,16 @@ import S from '@sanity/desk-tool/structure-builder';
 import { FcNews } from 'react-icons/fc';
 
 import { sanityClient } from '../../../helpers/client';
-import { getTemplateName } from '../../../helpers/functions';
+import { filterByBasicLocale, getTemplateName } from '../../../helpers/functions';
 import { dynamicPages } from '../../../schemas/documents/pages/schema';
 
 export const getDynamicDocuments = async () => {
   let query = ``;
   dynamicPages.forEach((page) => {
-    query += `{ "type": "${page.name}", "documents": *[_type == "page" && dynamicConfig.dynamicParent == true && dynamicConfig.dynamicType == "${page.name}" && !(_id in path("drafts.**"))] },`;
+    query += `{ 
+      "type": "${page.name}",
+       "documents": *[_type == "page" && dynamicConfig.dynamicParent == true && dynamicConfig.dynamicType == "${page.name}" && !(_id in path("drafts.**")) && ${filterByBasicLocale}] 
+    },`;
   });
   return sanityClient.fetch(`[${query}]`);
 };
@@ -24,7 +27,9 @@ export const getDynamicPages = (documents) => {
           .child(
             S.documentTypeList(item.type)
               .title(document.title)
-              .filter(`_type == $type && parent._ref == $parent`)
+              .filter(
+                `_type == $type && parent._ref == $parent && ${filterByBasicLocale}`,
+              )
               .params({ type: item.type, parent: document._id })
               .initialValueTemplates([
                 S.initialValueTemplateItem(getTemplateName(item.type), {
