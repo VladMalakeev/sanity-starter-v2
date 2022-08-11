@@ -2,7 +2,7 @@ import { Box, Spinner } from '@sanity/ui';
 import React, { useEffect, useState } from 'react';
 import { ImLink } from 'react-icons/im';
 
-import { LANGUAGES } from '../../../../utils/constants';
+import { LANGUAGES, MAX_NESTING_LEVEL } from '../../../../utils/constants';
 import { sanityClient } from '../../../helpers/client';
 
 export const PageReference = ({ value }) => {
@@ -18,7 +18,7 @@ export const PageReference = ({ value }) => {
     };
   }, []);
 
-  const locale = LANGUAGES.length > 1 ? `${page.lang}` : '';
+  const locale = LANGUAGES.length > 1 ? `${page?.lang}` : '';
 
   return (
     <Box padding={4} display="flex" style={{ alignItems: 'center' }}>
@@ -58,12 +58,13 @@ const nestedRouteQuery = (maxLevel, referenceName) => {
     ${level}  
   }{
     "path":select(${path}),
-    home
+    home,
+    lang
   }`;
 };
 
 export const getPageFullPath = async ({ _id, _type }) => {
-  const query = nestedRouteQuery(10, 'parent');
+  const query = nestedRouteQuery(MAX_NESTING_LEVEL, 'parent');
   const result = await sanityClient.fetch(query, {
     type: _type,
     id: _id,

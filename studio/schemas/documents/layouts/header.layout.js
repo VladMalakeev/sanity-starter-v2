@@ -1,12 +1,13 @@
 import AssetSource from 'part:sanity-plugin-media-library/asset-source';
 
 import { LAYOUT_TYPES } from '../../../../utils/constants';
-import { DEFAULT_LANGUAGE } from '../../helpers/commonfields';
+import { DEFAULT_LANGUAGE, I18N } from '../../helpers/commonfields';
 
 const header = {
   name: LAYOUT_TYPES.header,
   title: 'Header',
   type: 'document',
+  i18n: I18N,
   initialValue: {
     ...DEFAULT_LANGUAGE,
   },

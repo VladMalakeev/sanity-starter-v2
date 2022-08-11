@@ -2,7 +2,8 @@
     "idStructure": "delimiter",
     "referenceBehavior": "weak",
     "languages": [
-        {"id": "en", "title": "English"}
+        {"id": "en", "title": "English"},
+        {"id": "de", "title": "Deutsch"}
     ],
     "withTranslationsMaintenance": true
 }

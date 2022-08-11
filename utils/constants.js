@@ -1,3 +1,5 @@
+export const MAX_NESTING_LEVEL = 10;
+
 export const DYNAMIC_TYPES = {
   blog: 'blog_page',
   product: 'product_page',
@@ -8,6 +10,8 @@ export const MODULE_TYPES = {
   about: 'about_module',
   content: 'content_module',
   contact: 'contact_module',
+  blog: 'blog_module',
+  product: 'product_module',
 };
 
 // layouts
@@ -34,6 +38,9 @@ export const TEMPLATE_TYPES = {
 export const TEMPLATE_TYPES_LIST = Object.values(TEMPLATE_TYPES);
 
 // languages
-export const LANGUAGES = [{ locale: 'en', title: 'English', isDefault: true }];
+export const LANGUAGES = [
+  { locale: 'en', title: 'English', isDefault: true },
+  { locale: 'de', title: 'Deutsch' },
+];
 
 export const BASIC_LOCALE = LANGUAGES.find((language) => language.isDefault).locale;

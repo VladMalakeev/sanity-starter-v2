@@ -1,7 +1,11 @@
 import T from '@sanity/base/initial-value-template-builder';
 
-import blogTemplate from './templates/blog.template';
+import { DYNAMIC_TYPES } from '../../utils/constants';
+import dynamicPageTemplate from './templates/dynamicPage.template';
 import pageTemplate from './templates/page.template';
-import productTemplate from './templates/product.template';
 
-export default [...T.defaults(), pageTemplate, productTemplate, blogTemplate];
+const dynamicPageTemplates = Object.values(DYNAMIC_TYPES).map((type) =>
+  dynamicPageTemplate(type),
+);
+
+export default [...T.defaults(), pageTemplate, ...dynamicPageTemplates];

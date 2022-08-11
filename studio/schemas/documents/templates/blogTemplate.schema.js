@@ -5,10 +5,9 @@ import {
   LAYOUT_TYPES,
   TEMPLATE_TYPES,
 } from '../../../../utils/constants';
-import {
-  convertObjectToReference,
-  defaultTemplateValidation,
-} from '../../helpers/functions';
+import { DEFAULT_LANGUAGE, I18N } from '../../helpers/commonfields';
+import { convertObjectToReference } from '../../helpers/functions';
+import { defaultTemplateValidation } from '../../helpers/validation';
 
 const blogTemplate = {
   name: TEMPLATE_TYPES?.blog,
@@ -25,7 +24,9 @@ const blogTemplate = {
       };
     },
   },
+  i18n: I18N,
   initialValue: {
+    ...DEFAULT_LANGUAGE,
     isDefault: false,
   },
   fields: [

@@ -1,7 +1,8 @@
 import S from '@sanity/desk-tool/structure-builder';
-import { FcDatabase } from 'react-icons/fc';
+import { FcDatabase, FcViewDetails } from 'react-icons/fc';
 
-import modulesSchema from '../../../schemas/documents/modules/schema';
+import { commonModules } from '../../../schemas/documents/modules/schema';
+import { multipleViews, singleView } from '../helpers/views';
 
 const modules = S.listItem()
   .title('Modules')
@@ -10,9 +11,10 @@ const modules = S.listItem()
     S.list()
       .title('Modules')
       .items(
-        modulesSchema.map((module) =>
-          S.documentTypeListItem(module.name).title(module.title).icon(FcDatabase),
-        ),
+        commonModules.map((module) => {
+          return multipleViews(module.name, FcViewDetails);
+          // return singleView(module.name, FcDatabase);
+        }),
       ),
   );
 
