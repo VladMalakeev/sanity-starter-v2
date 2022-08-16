@@ -23,7 +23,7 @@ const blogSchema = {
     {
       name: 'content',
       title: 'Post content',
-      type: 'text',
+      type: 'blockContent',
     },
   ],
 };
