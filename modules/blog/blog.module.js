@@ -8,11 +8,13 @@ export const BlogModule = ({ author, image, content }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.authorWrap}>
-        <img
-          className={styles.authorImage}
-          width={60}
-          src={urlFor(image.asset._ref)}
-        />
+        {image?.asset?._ref && (
+          <img
+            className={styles.authorImage}
+            width={60}
+            src={urlFor(image?.asset?._ref)}
+          />
+        )}
         <span className={styles.authorName}>{author}</span>
       </div>
       <div className={styles.contentWrapper}>{content}</div>
