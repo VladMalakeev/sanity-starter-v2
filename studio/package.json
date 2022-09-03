@@ -24,6 +24,7 @@
     "@sanity/ui": "^0.37.12",
     "@sanity/vision": "^2.29.3",
     "@sanity/document-internationalization": "^0.3.5",
+    "@sanity/production-preview": "^2.29.3",
     "eslint": "^8.6.0",
     "prop-types": "^15.7",
     "react": "^17.0.2",

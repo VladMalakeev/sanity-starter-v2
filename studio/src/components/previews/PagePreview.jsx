@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './preview.module.css';
 
 export default function ProductsPreview({ document }) {
-  const { _type, slug } = document.displayed;
+  const { _type, _id, slug } = document.displayed;
 
   if (!slug?.current) {
     return (
@@ -11,11 +11,7 @@ export default function ProductsPreview({ document }) {
     );
   }
 
-  const pageSlug = _type === 'home' ? '' : slug.current;
-  const url =
-    process.env.NODE_ENV === 'production'
-      ? `../../${pageSlug}?preview`
-      : `http://localhost:3000/${pageSlug}?preview`;
+  const url = `${process.env.SANITY_STUDIO_PROJECT_PATH}api/sanity/preview?_id=${_id}&_type=${_type}&secret=${process.env.SANITY_STUDIO_PREVIEW_SECRET}`;
 
   return (
     <div className={styles.iframeContainer}>
