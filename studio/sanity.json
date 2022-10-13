@@ -16,6 +16,7 @@
     "@sanity/desk-tool",
     "@sanity/dashboard",
     "@sanity/document-internationalization",
+    "@sanity/production-preview",
     "media-library"
   ],
   "env": {
@@ -39,6 +40,10 @@
     {
       "name": "part:@sanity/base/initial-value-templates",
       "path": "./src/initialValueTemplates.js"
+    },
+    {
+      "implements": "part:@sanity/production-preview/resolve-production-url",
+      "path": "./src/resolveProductionUrl.js"
     }
   ]
 }

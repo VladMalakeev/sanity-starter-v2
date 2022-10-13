@@ -5,16 +5,18 @@ import { DYNAMIC_TYPES } from '@/utils/constants';
 import { seo } from '../components/seo';
 import { modulesView } from '../modules';
 
-const dynamicPages = Object.values(DYNAMIC_TYPES).map((type) => `"${type}"`);
+export const dynamicPageTypesQuery = Object.values(DYNAMIC_TYPES).map(
+  (type) => `"${type}"`,
+);
 
 export const dynamicPage = groq`
-  _type in [${dynamicPages}] => {
+  _type in [${dynamicPageTypesQuery}] => {
     ...,
     ${seo},
-    "modules": {
-        "before":parent->dynamicConfig.before []-> ${modulesView},
-        "content": [content ${modulesView}],
-        "after":parent->dynamicConfig.after []-> ${modulesView}
-    }
+    "modules": [
+        ...parent->dynamicConfig.before []-> ${modulesView},
+        ...[content ${modulesView}],
+        ...parent->dynamicConfig.after []-> ${modulesView}
+    ]
   }
 `;

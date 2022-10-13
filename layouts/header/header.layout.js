@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 export const HeaderLayout = ({ title, logo, menu }) => {
   return (
     <div className={styles.wrapper}>
-      <img width={70} src={urlFor(logo.asset._ref)} />
+      {logo?.asset?._ref && <img width={70} src={urlFor(logo.asset._ref)} />}
       <span className={styles.title}>
         <Link href="/">{title}</Link>
       </span>

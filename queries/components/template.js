@@ -13,7 +13,7 @@ const positions = Object.values(LAYOUT_POSITIONS).map(
   (position) => `"${position}":${position}->${layoutView},`,
 );
 
-const templateDocument = groq`{
+export const templateDocument = groq`{
   ...,
   positions {
    ${positions.join('')}

@@ -3,7 +3,7 @@ import { langRefFilter } from '../helpers/functions';
 
 const modulesSchema = {
   name: 'modules',
-  title: 'Lost of modules',
+  title: 'List of modules',
   type: 'array',
   of: commonModules.map((module) => ({
     title: module.title,

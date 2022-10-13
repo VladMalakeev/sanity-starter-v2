@@ -10,20 +10,27 @@ import styles from './styles.module.scss';
 export const BlogTemplate = ({ page, positions }) => {
   return (
     <div>
-      <header>
-        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.header]} />
-      </header>
+      {positions && (
+        <header>
+          <LayoutBuilder layout={positions[LAYOUT_POSITIONS.header]} />
+        </header>
+      )}
       <div className={styles.contentWrapper}>
-        <div className={styles.sitebarWraper}>
-          <LayoutBuilder layout={positions[LAYOUT_POSITIONS.sitebar]} />
-        </div>
+        {positions && (
+          <div className={styles.sitebarWraper}>
+            <LayoutBuilder layout={positions[LAYOUT_POSITIONS.sitebar]} />
+          </div>
+        )}
         <div className={styles.moduleWrapper}>
           <ContentBuilder page={page} />
         </div>
       </div>
-      <footer>
-        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.footer]} />
-      </footer>
+
+      {positions && (
+        <footer>
+          <LayoutBuilder layout={positions[LAYOUT_POSITIONS.footer]} />
+        </footer>
+      )}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import S from '@sanity/desk-tool/structure-builder';
 import { FcServices } from 'react-icons/fc';
 
+import { DYNAMIC_TYPES } from '../../../utils/constants';
 import PagePreview from '../components/previews/PagePreview';
 import { singleton } from './helpers/singleton';
 import { getDynamicDocuments, getDynamicPages } from './nodes/dynamic.structure';
@@ -37,7 +38,7 @@ export const getDefaultDocumentNode = ({ schemaType }) => {
    * you can set up that logic in here too.
    * https://www.sanity.io/docs/structure-builder-reference#getdefaultdocumentnode-97e44ce262c9
    */
-  const typesList = ['post'];
+  const typesList = [...Object.values(DYNAMIC_TYPES), 'page'];
 
   if (typesList.includes(schemaType)) {
     return S.document().views([

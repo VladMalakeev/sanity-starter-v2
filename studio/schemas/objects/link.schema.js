@@ -1,9 +1,25 @@
+import { FcLink } from 'react-icons/fc';
+
 import { DYNAMIC_TYPES } from '../../../utils/constants';
 
 const link = {
   name: 'link',
   title: 'Link',
   type: 'object',
+  preview: {
+    select: {
+      label: 'label',
+      external: 'external',
+      internal: 'internal',
+    },
+    prepare({ label, external, internal }) {
+      return {
+        title: label,
+        subtitle: external ?? internal ?? 'untitled',
+        media: FcLink,
+      };
+    },
+  },
   fields: [
     {
       name: 'label',
