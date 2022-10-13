@@ -10,20 +10,17 @@ function warning(msg) {
 
 // eslint-disable-next-line consistent-return
 const handler = async (req, res) => {
-  const { secret, _id, _type } = req.query;
+  const { id, type } = req.query;
 
-  if (secret !== process.env.SANITY_STUDIO_PREVIEW_SECRET) {
-    return res.status(401).send(warning('The preview token is invalid.'));
-  }
-
-  if (!secret || Array.isArray(secret) || !secret.trim().length)
-    return res.status(400).send(warning('secret is missing.'));
-
-  if (Array.isArray(_id) || Array.isArray(_type)) {
+  if (Array.isArray(id) || Array.isArray(type)) {
     return res.status(400).send(warning('invalid arguments.'));
   }
 
-  const Location = `/preview?id=${_id}&type=${_type}`;
+  const params = new URLSearchParams();
+  params.set('id', id);
+  params.set('type', type);
+
+  const Location = `/preview?${params.toString()}`;
   res.setPreviewData({});
   res.writeHead(307, { Location });
   res.end();

@@ -11,7 +11,8 @@ export default function ProductsPreview({ document }) {
     );
   }
 
-  const url = `${process.env.SANITY_STUDIO_PROJECT_PATH}api/sanity/preview?_id=${_id}&_type=${_type}&secret=${process.env.SANITY_STUDIO_PREVIEW_SECRET}`;
+  const domain = process.env.SANITY_STUDIO_PROJECT_PATH ?? 'http://localhost:3000/';
+  const url = `${domain ?? ''}/api/sanity/preview?id=${_id}&type=${_type}`;
 
   return (
     <div className={styles.iframeContainer}>

@@ -10,13 +10,17 @@ import styles from './styles.module.scss';
 export const ProductsTemplate = ({ page, positions }) => {
   return (
     <div>
-      <header>
-        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.header]} />
-      </header>
+      {positions && (
+        <>
+          <header>
+            <LayoutBuilder layout={positions[LAYOUT_POSITIONS.header]} />
+          </header>
 
-      <div>
-        <LayoutBuilder layout={positions[LAYOUT_POSITIONS.breadcrumbs]} />
-      </div>
+          <div>
+            <LayoutBuilder layout={positions[LAYOUT_POSITIONS.breadcrumbs]} />
+          </div>
+        </>
+      )}
 
       <div className={styles.contentWrapper}>
         <ContentBuilder page={page} />

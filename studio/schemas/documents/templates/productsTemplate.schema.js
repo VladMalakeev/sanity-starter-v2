@@ -1,13 +1,13 @@
 import { FcTemplate } from 'react-icons/fc';
 
-import {
-  LAYOUT_POSITIONS,
-  LAYOUT_TYPES,
-  TEMPLATE_TYPES,
-} from '../../../../utils/constants';
+import { LAYOUT_POSITIONS, TEMPLATE_TYPES } from '../../../../utils/constants';
 import { DEFAULT_LANGUAGE, I18N } from '../../helpers/commonfields';
-import { convertObjectToReference } from '../../helpers/functions';
-import { defaultTemplateValidation } from '../../helpers/validation';
+import {
+  TEMPLATE_IS_DEFAULT,
+  TEMPLATE_POSITIONS,
+  TEMPLATE_TITLE,
+  TEMPLATE_VALIDATION,
+} from '../../helpers/templateFields';
 
 const productTemplate = {
   name: TEMPLATE_TYPES?.product,
@@ -30,43 +30,20 @@ const productTemplate = {
     isDefault: false,
   },
   fields: [
-    {
-      name: 'title',
-      title: 'Template title',
-      type: 'string',
-    },
-    {
-      name: 'isDefault',
-      title: 'Set as default template',
-      type: 'boolean',
-      initialValue: false,
-    },
-    {
-      name: 'positions',
-      title: 'Layout positions',
-      type: 'object',
-      fields: [
-        {
-          name: LAYOUT_POSITIONS.header,
-          title: 'Header',
-          type: 'reference',
-          to: convertObjectToReference(LAYOUT_TYPES),
-        },
-        {
-          name: LAYOUT_POSITIONS.breadcrumbs,
-          title: 'Breadcrumbs',
-          type: 'reference',
-          to: convertObjectToReference(LAYOUT_TYPES),
-        },
-      ],
-    },
+    TEMPLATE_TITLE,
+    TEMPLATE_IS_DEFAULT,
+    TEMPLATE_POSITIONS([
+      {
+        name: LAYOUT_POSITIONS.header,
+        title: 'Header',
+      },
+      {
+        name: LAYOUT_POSITIONS.breadcrumbs,
+        title: 'Breadcrumbs',
+      },
+    ]),
   ],
-  validation: (Rule) =>
-    Rule.custom(async (fields) => {
-      const isDefaultError = await defaultTemplateValidation(fields);
-      if (isDefaultError) return isDefaultError;
-      return true;
-    }),
+  validation: TEMPLATE_VALIDATION,
 };
 
 export default productTemplate;
